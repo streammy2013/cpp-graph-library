@@ -4,5 +4,9 @@
 
 #ifndef CGRAPH_VERTEX_H
 #define CGRAPH_VERTEX_H
-
+template<typename U>
+struct Vertex {
+    int id;
+    U info;
+};
 #endif //CGRAPH_VERTEX_H
