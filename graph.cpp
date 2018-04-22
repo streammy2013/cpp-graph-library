@@ -6,9 +6,9 @@ struct Node {
 	U info;
 };
 
-template<class T>
+template<class T, class U>
 struct Edge {
-	int to;
+	Node<U> to;
 	T info;
 };
 template<class U, class T>

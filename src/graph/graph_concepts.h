@@ -1,0 +1,4 @@
+#ifndef CGRAPH_CONCEPTS_H
+#define CGRAPH_CONCEPTS_H
+
+#endif
