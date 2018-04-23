@@ -7,6 +7,8 @@ namespace std_graph_lib {
     template<typename V, typename E>
     class fixed_directed_dense_graph: public directed_graph<V, E> {	        
     public:        
+        using node_handle = size_t;
+        using edge_handle = pair<size_t, size_t>;
         fixed_directed_dense_graph (size_t num) {
             node_num = num;
             for (int i = 0; i < node_num; i++) {
@@ -104,15 +106,15 @@ namespace std_graph_lib {
             return node_vector[v];
         }
 
-        private:
-            size_t node_num;
-            vector<vector<E>> adj_matrix;
-            // indicator for valid edges
-            vector<vector<bool>> con;
-            vector<V> node_vector;
-            node_handle generate_id() {
-                return node_vector.size();
-            };
+    private:
+        size_t node_num;
+        vector<vector<E>> adj_matrix;
+        // indicator for valid edges
+        vector<vector<bool>> con;
+        vector<V> node_vector;
+        node_handle generate_id() {
+            return node_vector.size();
+        };
     };
 
 }

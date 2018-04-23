@@ -1,82 +1,76 @@
-//
-// Created by Mingjie Zhao on 4/20/18.
-//
-
-#ifndef CGRAPH_FIXED_DIRECTED_SPARSE_GRAPH_LIB_H
-#define CGRAPH_FIXED_DIRECTED_SPARSE_GRAPH_LIB_H
+#ifndef CGRAPH_DIRECTED_SPARSE_GRAPH_LIB_H
+#define CGRAPH_DIRECTED_SPARSE_GRAPH_LIB_H
 #include "graph.h"
+#include <vector>
 using namespace std;
 namespace std_graph_lib {
     template<typename V, typename E>
-    class fixed_directed_sparse_graph: public directed_graph<V, E> {
+    class directed_sparse_graph: public directed_graph<V, E> {
     public:
         using node_handle = size_t;
         using edge_handle = pair<size_t, size_t>;
-        struct edge { 
-            node_handle to; 
-            E info; 
+        struct edge {
+            node_handle to;
+            E info;
         };
-        fixed_directed_sparse_graph (int num) : node_num(num) {}
+        directed_sparse_graph() {}
         node_handle insert_node (V info) {
             node_handle id = generate_id();
-            if (id >= node_num) {
-                cout << "The input node is out of bound." << endl;
-                return -1;
+            //need expand or not?
+            if (id >= node_vector.size()) {
+                node_vector.push_back(info);
+                node_flag.push_back(true);
+                adj_list.push_back(vector<edge>());
+            } else {
+                node_vector[id] = info;
+                node_flag[id] = true;
             }
-            node_vector.push_back(info);
-            adj_list.push_back(vector<edge>());
             return id;
         }
-        size_t node_cnt() {
-            return node_vector.size();
+        void erase_node (node_handle v) {
+            // TODO: check exception
+            if (node_flag[v] == false) return;
+            // clean node_vector
+            node_flag[v] = false;
+            // need to clean adj_matrix?
         }
         edge_handle insert_edge (node_handle v1, node_handle v2, E info) {
-            int cnt = node_vector.size();
-            if (v1 >= cnt || v2 >= cnt) {
-                cout << "The node has not been initialized. Please insert this node first." << endl;
-                return {-1, -1};
-            }
-            if (v1 >= node_num || v2 >= node_num) {
-                cout << "The input is out of bound." << endl;
-                return {-1, -1};
-            }
-            //auto id = adj_list[v1].size();
+            // TODO: check exception
             adj_list[v1].push_back(edge{v2, info});
             return {v1, v2};
         }
         void erase_edge (edge_handle e) {
-            int cnt = node_vector.size();
-            // TODO: check exception
-            if (e.first >= cnt || e.second >= cnt) {
-                cout << "The node has not been initialized. Please insert this node first." << endl;
-                return;
-            }
+            if (!node_flag[e.first]) return;
             int i = 0;
             for (i = 0; i < adj_list[e.first].size(); i++) {
+                if (!node_flag[e.first]) continue;
                 if (adj_list[e.first][i].to == e.second)
                     break;
             }
             if (i == adj_list[e.first].size()) return;
             adj_list[e.first].erase(adj_list[e.first].begin() + i);
         }
-        void print_graph() {
-            for (int i = 0; i < node_num; i++) {
-                cout << "Node " << i << ": ";
-                cout << node_vector[i].to_string() << endl;
-                cout << "Edges:" << endl;
-                for (const auto& e : (*this).out(i)) {
 
-                    auto to = e.to;
-                    auto info = e.value;
-                    cout << to << ", " << info.to_string() << endl;
-                }
+        void print_graph() {
+            size_t node_num = node_flag.size();
+            for (int i = 0; i < node_num; i++) {
+                if (node_flag[i]) {
+                    cout << "Node " << i << ": ";
+                    cout << node_vector[i].to_string() << endl;
+                    cout << "Edges:" << endl;
+                    for (const auto& e : (*this).out(i)) {
+                        auto to = e.to;
+                        auto info = e.value;
+                        cout << to << ", " << info.to_string() << endl;
+                    }
+                }                
             }
         }
         struct out_edges {
-		    fixed_directed_sparse_graph& G;
+		    directed_sparse_graph& G;
 		    size_t v1;
             struct iterator {
-                fixed_directed_sparse_graph& G;
+                directed_sparse_graph& G;
                 size_t v1;
                 size_t idx;
                 size_t v2;
@@ -116,13 +110,18 @@ namespace std_graph_lib {
         const V& operator[](node_handle v)const {
             return node_vector[v];
         }
-        private:
-            int node_num;
-            vector<vector<edge>> adj_list;
-            vector<V> node_vector;
-            node_handle generate_id() {
-                return node_vector.size();
+    private:
+        vector<V> node_vector;
+        vector<vector<edge>> adj_list;
+        vector<bool> node_flag;
+        node_handle generate_id() {
+            if (node_vector.size() == 0) return 0;
+            node_handle id = 0;
+            for (id = 0; id < node_flag.size(); id++) {
+                if (node_flag[id] == false) break;
             }
+            return id;
+        }
     };
 }
-#endif //CGRAPH_FIXED_DIRECTED_SPARSE_GRAPH_LIB_H
+#endif

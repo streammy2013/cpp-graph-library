@@ -10,11 +10,11 @@
 
 using namespace std;
 namespace std_graph_lib {
-    using node_handle = size_t;
-    using edge_handle = pair<size_t, size_t>;
     template<typename V, typename E>
     class graph {        
-    public:        
+    public:     
+        using node_handle = size_t;
+        using edge_handle = pair<size_t, size_t>;   
         graph() {}
         virtual ~graph()=0;
         virtual node_handle insert_node(V)=0;

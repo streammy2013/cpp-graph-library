@@ -1,6 +1,7 @@
 #ifndef CGRAPH_ALGORITHMS_H
 #define CGRAPH_ALGORITHMS_H
 #include "graph.h"
+#include "graph_concepts.h"
 #include <queue>
 #include <stack>
 #include <unordered_map>
@@ -8,8 +9,8 @@
 using namespace std_graph_lib;
 
 template<typename G, typename MP>
-void dijstra(G g, node_handle s, MP& mp) {
-    priority_queue<pair<typename MP::mapped_type, node_handle> > que;
+void dijstra(G g, typename G::node_handle s, MP& mp) {
+    priority_queue<pair<typename MP::mapped_type, typename G::node_handle> > que;
     que.push({0, s});
     while (!que.empty()) {
         auto [dis, v] = que.top(); 
@@ -23,10 +24,11 @@ void dijstra(G g, node_handle s, MP& mp) {
     }
 }
 template <typename G, typename C>
-bool generic_pathexists(G g, node_handle s, node_handle e, C& container) {
+requires Graph<G>
+bool generic_pathexists(G g, typename G::node_handle s, typename G::node_handle e, C& container) {
     bool flag = false;
-    int node_num = g.node_cnt();
-    unordered_map<node_handle, bool> visited;
+    //int node_num = g.node_cnt();
+    unordered_map<typename G::node_handle, bool> visited;
     container.push(s);
     while (!container.empty()) {
         auto v = container.top();
@@ -51,13 +53,15 @@ public:
     }
 };
 template<typename G>
-bool bfs_findpath(G g, node_handle s, node_handle e) {
-    _queue<node_handle> q;
+requires Graph<G>
+bool bfs_findpath(G g, typename G::node_handle s, typename G::node_handle e) {
+    _queue<typename G::node_handle> q;
     return generic_pathexists(g, s, e, q);
 }
 template<typename G>
-bool dfs_findpath(G g, node_handle s, node_handle e) {
-    stack<node_handle> q;
+requires Graph<G>
+bool dfs_findpath(G g, typename G::node_handle s, typename G::node_handle e) {
+    stack<typename G::node_handle> q;
     return generic_pathexists(g, s, e, q);
 }
 
