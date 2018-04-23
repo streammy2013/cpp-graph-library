@@ -1,5 +1,8 @@
 # cpp-graph-library
 
+# Environment
+* To use concept, make sure the version of your gcc compiler is greater than 6.1.0 according to [Constraints and concepts](http://en.cppreference.com/w/cpp/language/constraints).
+
 # some references
 
 
