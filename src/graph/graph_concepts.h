@@ -43,6 +43,14 @@ concept bool node_handler =
 requires (V v) {
     requires equality_comparable<V>;
 };
+
+template <typename E>
+concept bool edge_handler = 
+requires (E e) {
+    e.first;
+    e.second;
+    
+};
 template <typename I>
 concept bool iterator = 
 requires (I i) {

@@ -11,7 +11,7 @@ namespace std_graph_lib {
     class fixed_directed_sparse_graph: public directed_graph<V, E> {
     public:
         using node_handle = size_t;
-        using edge_handle = pair<size_t, size_t>;
+        using edge_handle = pair<node_handle, node_handle>;
         struct edge { 
             node_handle to; 
             E info; 

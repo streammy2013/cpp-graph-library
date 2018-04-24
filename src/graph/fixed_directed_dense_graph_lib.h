@@ -8,7 +8,7 @@ namespace std_graph_lib {
     class fixed_directed_dense_graph: public directed_graph<V, E> {	        
     public:        
         using node_handle = size_t;
-        using edge_handle = pair<size_t, size_t>;
+        using edge_handle = pair<node_handle, node_handle>;
         fixed_directed_dense_graph (size_t num) {
             node_num = num;
             for (int i = 0; i < node_num; i++) {

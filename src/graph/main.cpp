@@ -76,6 +76,7 @@ void sparse_tests() {
     auto v5 = dsg.insert_node(city("Houston"));
     auto e1 = dsg.insert_edge(v0, v1, dis(2914));
     auto e2 = dsg.insert_edge(v3, v4, dis(2066));
+    auto e3 = dsg.insert_edge(v1, v3, dis(2130));
     dsg.print_graph();
     dsg.erase_node(v3);
     dsg.print_graph();
