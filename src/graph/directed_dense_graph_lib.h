@@ -11,6 +11,7 @@ namespace std_graph_lib {
     public:
         using node_handle = size_t;
         using edge_handle = pair<node_handle, node_handle>;
+        using cost_type = E;
         struct edge {
             node_handle to;
             E info;
@@ -97,14 +98,14 @@ namespace std_graph_lib {
                 size_t v2;
                 struct fake {
                     const size_t to;
-                    const E& value;
+                    const E& info;
                 };
                 bool operator!=(iterator it) {
                     return v2 != it.v2;
                 }
                 iterator& operator++() { 
                     v2++;
-                    while (v2 < G.adj_matrix[v1].size() && G.matrix_flag[v1][v2]) v2++;
+                    while (v2 < G.adj_matrix[v1].size() && !G.matrix_flag[v1][v2]) v2++;
                     return *this;
                 }
                 fake operator*() {
@@ -114,7 +115,7 @@ namespace std_graph_lib {
             };
             iterator begin()const {
                 size_t v2 = 0;
-                while (v2 < G.adj_matrix[v1].size() && G.matrix_flag[v1][v2]) v2++;
+                while (v2 < G.adj_matrix[v1].size() && !G.matrix_flag[v1][v2]) v2++;
                 return {G, v1, v2};
             }
             iterator end()const {

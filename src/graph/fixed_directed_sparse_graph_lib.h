@@ -12,10 +12,12 @@ namespace std_graph_lib {
     public:
         using node_handle = size_t;
         using edge_handle = pair<node_handle, node_handle>;
+        using cost_type = E;
         struct edge { 
             node_handle to; 
             E info; 
         };
+        fixed_directed_sparse_graph(){}
         fixed_directed_sparse_graph (int num) : node_num(num) {}
         node_handle insert_node (V info) {
             node_handle id = generate_id();
@@ -29,6 +31,18 @@ namespace std_graph_lib {
         }
         size_t node_cnt() {
             return node_vector.size();
+        }
+
+        V handle_to_info (node_handle v) {
+            return node_vector[v];
+        }
+        E end_to_edge (node_handle h1, node_handle h2) {
+            int i = 0;
+            for (i = 0; i < adj_list[h1].size(); i++) {
+                if (adj_list[h1][i].to == h2)
+                    return adj_list[h1][i].info;
+            }
+            //return nullptr;
         }
         edge_handle insert_edge (node_handle v1, node_handle v2, E info) {
             int cnt = node_vector.size();
@@ -67,7 +81,7 @@ namespace std_graph_lib {
                 for (const auto& e : (*this).out(i)) {
 
                     auto to = e.to;
-                    auto info = e.value;
+                    auto info = e.info;
                     cout << to << ", " << info.to_string() << endl;
                 }
             }
@@ -82,7 +96,7 @@ namespace std_graph_lib {
                 size_t v2;
                 struct fake {
                     const size_t to;
-                    const E& value;
+                    const E& info;
                 };
                 bool operator!=(iterator it) {
                     return idx != it.idx;

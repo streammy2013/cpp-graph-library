@@ -9,11 +9,13 @@ namespace std_graph_lib {
     public:        
         using node_handle = size_t;
         using edge_handle = pair<node_handle, node_handle>;
+        using cost_type = E;
+        fixed_directed_dense_graph () {}
         fixed_directed_dense_graph (size_t num) {
             node_num = num;
             for (int i = 0; i < node_num; i++) {
                 adj_matrix.push_back(vector<E>(num, E()));
-                con.push_back(vector<bool>(node_num, false));
+                matrix_flag.push_back(vector<bool>(node_num, false));
             }
         }
 
@@ -24,6 +26,12 @@ namespace std_graph_lib {
 
         size_t node_cnt() {
             return node_num;
+        }
+        V handle_to_info (node_handle v) {
+            return node_vector[v];
+        }
+        E end_to_edge (node_handle h1, node_handle h2) {
+            return adj_matrix[h1][h2];
         }
         node_handle insert_node (V info) {
             node_handle id = generate_id();
@@ -40,11 +48,11 @@ namespace std_graph_lib {
                 return {-1, -1};
             }
             adj_matrix[v1][v2] = info;
-            con[v1][v2] = true;
+            matrix_flag[v1][v2] = true;
             return {v1, v2};
         }
         void erase_edge (edge_handle e) {
-            con[e.first][e.second] = false;
+            matrix_flag[e.first][e.second] = false;
         }
         void print_graph() {
             for (int i = 0; i < node_num; i++) {
@@ -53,7 +61,7 @@ namespace std_graph_lib {
             }
             for (int i = 0; i < node_num; i++) {
                 for (int j = 0; j < node_num; j++) {
-                    if (con[i][j]) {
+                    if (matrix_flag[i][j]) {
                         cout << adj_matrix[i][j].to_string() << " ";
                     } else {
                         cout << 0 << " ";
@@ -71,14 +79,14 @@ namespace std_graph_lib {
                 size_t v2;
                 struct fake {
                     const size_t to;
-                    const E& value;
+                    const E& info;
                 };
                 bool operator!=(iterator it) {
                     return v2 != it.v2;
                 }
                 iterator& operator++() { 
                     v2++;
-                    while (v2 < G.adj_matrix[v1].size() && G.con[v1][v2]) v2++;
+                    while (v2 < G.adj_matrix[v1].size() && !G.matrix_flag[v1][v2]) v2++;
                     return *this;
                 }
                 fake operator*() {
@@ -87,11 +95,12 @@ namespace std_graph_lib {
             };
             iterator begin()const {
                 size_t v2 = 0;
-                while (v2 < G.adj_matrix[v1].size() && G.con[v1][v2]) v2++;
+                while (v2 < G.adj_matrix[v1].size() && !G.matrix_flag[v1][v2]) v2++;
+                //cout << v1 << "begin" << v2 << endl;
                 return {G, v1, v2};
             }
             iterator end()const {
-                return {G, v1, G.con[v1].size()};
+                return {G, v1, G.matrix_flag[v1].size()};
             }
         };
 	//typedef out_edges::iterator edge_handle?
@@ -110,7 +119,7 @@ namespace std_graph_lib {
         size_t node_num;
         vector<vector<E>> adj_matrix;
         // indicator for valid edges
-        vector<vector<bool>> con;
+        vector<vector<bool>> matrix_flag;
         vector<V> node_vector;
         node_handle generate_id() {
             return node_vector.size();

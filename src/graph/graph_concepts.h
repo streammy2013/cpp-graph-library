@@ -39,13 +39,13 @@ requires (A a, B b) {
     {b} -> A;
 };
 template <typename V>
-concept bool node_handler = 
+concept bool Node_handler = 
 requires (V v) {
     requires equality_comparable<V>;
 };
 
 template <typename E>
-concept bool edge_handler = 
+concept bool Edge_handler = 
 requires (E e) {
     e.first;
     e.second;
@@ -75,5 +75,18 @@ requires (G g, typename G::node_handle v) {
     typename G::out_edges::iterator;
     {g.out(v).begin()} -> typename G::out_edges::iterator;
     {g.out(v).end()} -> typename G::out_edges::iterator;
+};
+
+template <typename V>
+concept bool Node_info = 
+requires (V v) {
+    {v.to_string() } -> string;
+};
+
+template <typename E>
+concept bool Edge_info =
+requires (E e1, E e2) {
+    {e1.to_string() } -> string;
+    {e1 + e2} -> E;
 };
 #endif

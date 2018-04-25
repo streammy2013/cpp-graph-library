@@ -17,5 +17,11 @@ struct dis {
     string to_string() {
         return std::to_string(miles);
     }
+    const size_t get_val() const{
+        return miles;
+    }
+    dis operator+(dis d) const{
+        return dis(miles + d.miles);
+    }
 };
 #endif
