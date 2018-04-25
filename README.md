@@ -1,9 +1,9 @@
 # cpp-graph-library
 
-# Environment
+## environment
 * To use concept, make sure the version of your gcc compiler is greater than 6.1.0 according to [Constraints and concepts](http://en.cppreference.com/w/cpp/language/constraints).
 
-# some references
+## some references
 
 
 * [The Boost Graph Library](http://www.boost.org/doc/libs/1_66_0/libs/graph/doc/index.html)
