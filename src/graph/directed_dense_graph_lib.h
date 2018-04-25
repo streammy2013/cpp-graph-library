@@ -19,6 +19,16 @@ namespace std_graph_lib {
         directed_dense_graph() {
             unique_handle = 0;
         }
+
+        V handle_to_info (node_handle h) {
+            size_t v = handle_to_id[v];
+            return node_vector[v];
+        }
+        E end_to_edge (node_handle h1, node_handle h2) {
+            size_t v1 = handle_to_id[h1];
+            size_t v2 = handle_to_id[h2];
+            return adj_matrix[v1][v2];
+        }
         node_handle insert_node(V info) {
             node_handle user_handle = generate_handle();
             size_t id = generate_id();

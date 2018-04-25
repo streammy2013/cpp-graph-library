@@ -70,13 +70,16 @@ void dense_tests() {
     auto v5 = ddg.insert_node(city("Houston"));
     auto e1 = ddg.insert_edge(v0, v1, dis(2914));
     auto e2 = ddg.insert_edge(v3, v4, dis(2066));
+    auto e3 = ddg.insert_edge(v1, v3, dis(2130));
+    auto e4 = ddg.insert_edge(v0, v2, dis(2793));
+    auto e5 = ddg.insert_edge(v2, v3, dis(2016));
     ddg.print_graph();
+    shared_ptr<path<G, typename G::node_handle>> bfs_path = bfs_findpath(ddg, v0, v3);
+    bfs_path->print_path();
+    shared_ptr<path<G, typename G::node_handle>> dfs_path = dfs_findpath(ddg, v0, v3);
+    dfs_path->print_path();
     ddg.erase_node(v3);
     ddg.print_graph();
-    cout << bfs_findpath(ddg, v0, v1) << endl;
-    cout << dfs_findpath(ddg, v0, v1) << endl;
-    cout << bfs_findpath(ddg, v5, v4) << endl;
-    cout << dfs_findpath(ddg, v5, v4) << endl;
 
 }
 
@@ -94,19 +97,21 @@ void sparse_tests() {
     auto e1 = dsg.insert_edge(v0, v1, dis(2914));
     auto e2 = dsg.insert_edge(v3, v4, dis(2066));
     auto e3 = dsg.insert_edge(v1, v3, dis(2130));
+    auto e4 = dsg.insert_edge(v0, v2, dis(2793));
+    auto e5 = dsg.insert_edge(v2, v3, dis(2016));
     dsg.print_graph();
+    shared_ptr<path<G, typename G::node_handle>> bfs_path = bfs_findpath(dsg, v0, v3);
+    bfs_path->print_path();
+    shared_ptr<path<G, typename G::node_handle>> dfs_path = dfs_findpath(dsg, v0, v3);
+    dfs_path->print_path();
     dsg.erase_node(v3);
     dsg.print_graph();
-    cout << bfs_findpath(dsg, v0, v1) << endl;
-    cout << dfs_findpath(dsg, v0, v1) << endl;
-    cout << bfs_findpath(dsg, v5, v4) << endl;
-    cout << dfs_findpath(dsg, v5, v4) << endl;
 
 }
 int main() {
     
     fixed_dense_tests<fixed_directed_dense_graph<city, dis>, city, dis>();
     fixed_sparse_tests<fixed_directed_sparse_graph<city, dis>, city, dis>();
-    //dense_tests<directed_dense_graph<city, dis>, city, dis>();
-    //sparse_tests<directed_sparse_graph<city, dis>, city, dis>();
+    dense_tests<directed_dense_graph<city, dis>, city, dis>();
+    sparse_tests<directed_sparse_graph<city, dis>, city, dis>();
 }
