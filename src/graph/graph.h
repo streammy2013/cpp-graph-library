@@ -4,10 +4,8 @@
 
 #ifndef CGRAPH_GRAPH_H
 #define CGRAPH_GRAPH_H
-#include <vector>
 #include <iostream>
-#include <queue>
-
+#include <vector>
 using namespace std;
 namespace std_graph_lib {
     template<typename V, typename E>
@@ -18,8 +16,6 @@ namespace std_graph_lib {
         graph() {}
         virtual ~graph()=0;
         virtual node_handle insert_node(V)=0;
-        // TODO:不确定子类是否要实现所有的虚函数
-        //virtual void erase_node(V)=0;
         virtual edge_handle insert_edge(node_handle, node_handle, E)=0;
         virtual void erase_edge(edge_handle)=0;
         virtual void print_graph()=0;
