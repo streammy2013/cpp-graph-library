@@ -172,7 +172,36 @@ void load_map_data() {
         }
     }
 
-    city_map.print_graph();
+    unordered_map<size_t, int> d;
+    unordered_map<size_t, size_t> pi;
+
+    shortest_path_bf(city_map, nodes[0], d, pi);
+
+}
+
+void test_shortest_path() {
+    fixed_directed_dense_graph<city, dis> fddg = fixed_directed_dense_graph<city, dis>(6);
+    auto s = fddg.insert_node(city("s"));
+    auto t = fddg.insert_node(city("t"));
+    auto a = fddg.insert_node(city("a"));
+    auto b = fddg.insert_node(city("b"));
+    auto c = fddg.insert_node(city("c"));
+    auto f = fddg.insert_node(city("f"));
+    auto e1 = fddg.insert_edge(s, a, dis(3));
+    auto e2 = fddg.insert_edge(s, b, dis(4));
+    auto e3 = fddg.insert_edge(a, c, dis(2));
+    auto e4 = fddg.insert_edge(a, b, dis(6));
+    auto e5 = fddg.insert_edge(a, f, dis(7));
+    auto e6 = fddg.insert_edge(b, f, dis(5));
+    auto e7 = fddg.insert_edge(c, f, dis(1));
+    auto e8 = fddg.insert_edge(c, t, dis(8));
+    auto e9 = fddg.insert_edge(f, t, dis(4));
+
+    unordered_map<size_t, int> d;
+    unordered_map<size_t, size_t> pi;
+
+    shortest_path_bf(fddg, s, d, pi);
+    cout << d[t] << endl;
 }
 
 int main() {
@@ -181,5 +210,6 @@ int main() {
     fixed_sparse_tests<fixed_directed_sparse_graph<city, dis>, city, dis>();
     dense_tests<directed_dense_graph<city, dis>, city, dis>();
     sparse_tests<directed_sparse_graph<city, dis>, city, dis>();
-    load_map_data();
+//    load_map_data();
+    test_shortest_path();
 }

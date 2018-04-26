@@ -8,6 +8,7 @@
 #include <stack>
 #include <unordered_map>
 #include <algorithm>
+#include <limits>
 using namespace std;
 using namespace std_graph_lib;
 
@@ -133,5 +134,53 @@ shared_ptr<path<G, typename G::node_handle>> generic_findpath(G g, typename G::n
     found_path->path_handles = node_handles;
     return found_path;
 }
+
+template<typename G>
+requires Graph<G>
+void relax(G g, typename G::node_handle u, typename G::node_handle v,
+           unordered_map<typename G::node_handle, int>& d,
+           unordered_map<typename G::node_handle, typename G::node_handle>& pi){
+    auto weight = g.end_to_edge(u, v).get_val();
+    if (d[v] > d[u] + weight){
+        d[v] = d[u] + weight;
+        pi[v] = u;
+    }
+}
+
+template<typename G>
+requires Graph<G>
+void shortest_path_bf(G g, typename G::node_handle s,
+                      unordered_map<typename G::node_handle, int>& d,
+                      unordered_map<typename G::node_handle, typename G::node_handle>& pi){
+    for (auto v: g.all_nodes()) {
+        d[v] = std::numeric_limits<int>::max();
+    }
+    d[s] = 0;
+
+    for (auto v: g.all_nodes()) {
+        for (auto v2: g.all_nodes()) {
+            for (auto e: g.out(v2)) {
+                relax<G>(g, v2, e.to, d, pi);
+            }
+        }
+    }
+}
+//
+//template<typename G>
+//requires Graph<G>
+//void apsp_johnson(G g) {
+//    unordered_map<typename G::node_handle, double>& d;
+//    unordered_map<typename G::node_handle, typename G::node_handle>& pi;
+//    shortest_path_bf(g, g.vertex);
+//
+//    unordered_map<typename G::node_handle, double> p;
+//    for (node_handle v: Vertices) {
+//        p[v] = - d[v];
+//    }
+//
+//
+//}
+
+
 
 #endif
