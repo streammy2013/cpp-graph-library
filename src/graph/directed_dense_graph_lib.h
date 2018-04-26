@@ -13,6 +13,14 @@ namespace std_graph_lib {
         using edge_handle = pair<node_handle, node_handle>;
         using cost_type = E;
         struct edge {
+            edge() {}
+            edge(node_handle t, E i) {
+                to = t;
+                info = i;
+            }
+            node_handle get_to() {return to;}
+            E get_info() {return info;}
+        private:
             node_handle to;
             E info;
         };
@@ -98,6 +106,36 @@ namespace std_graph_lib {
                 }
                 cout << endl;
             }
+        }
+        struct nodes {
+            directed_dense_graph& G;
+            struct iterator {
+                directed_dense_graph& G;
+                node_handle v;
+                bool operator!=(iterator it) {
+                    return v != it.v;
+                }
+                iterator& operator++() {
+                    v++;
+                    while (v < G.node_vector.size() && !G.node_flag[v]) v++;
+                    return {*this};
+                }
+                node_handle operator*() {
+                    node_handle h = G.id_to_handle[v];
+                    return h;
+                }
+            };
+            iterator begin()const {
+                size_t v = 0;
+                while (v < G.node_vector.size() && !G.node_flag[v]) v++;
+                return {G, v};
+            }
+            iterator end()const {
+                return {G, G.node_vector.size()};
+            }
+        };
+        nodes all_nodes() {
+            return {*this};
         }
         struct out_edges {
 		    directed_dense_graph& G;

@@ -20,8 +20,16 @@ namespace std_graph_lib {
         }
 
         struct edge {
-            const node_handle to;
-            const E& info;
+            edge () {}
+            edge (node_handle t, E i) {
+                to = t;
+                info = i;
+            }
+            node_handle get_to () {return to; }
+            E get_info() {return info; }
+        private:
+            node_handle to;
+            E& info;
         };
 
         size_t node_cnt() {
@@ -70,6 +78,34 @@ namespace std_graph_lib {
                 cout << endl;
             }
         }
+        struct nodes {
+            fixed_directed_dense_graph& G;
+            //nodes (fixed_directed_dense_graph g) { G = g;}
+            struct iterator {
+                fixed_directed_dense_graph& G;
+                node_handle v;
+                bool operator!=(iterator it) {
+                    return v != it.v;
+                }
+                iterator& operator++() {
+                    v++;
+                    return *this;
+                }
+                node_handle operator*() {
+                    return v;
+                }
+            };
+            iterator begin()const {
+                node_handle v = 0;
+                return {G, v};
+            }
+            iterator end()const {
+                return {G, G.node_vector.size()};
+            }
+        };
+        nodes all_nodes() {
+            return {*this};
+        }
         struct out_edges {
 		    fixed_directed_dense_graph& G;
 		    size_t v1;
@@ -96,7 +132,6 @@ namespace std_graph_lib {
             iterator begin()const {
                 size_t v2 = 0;
                 while (v2 < G.adj_matrix[v1].size() && !G.matrix_flag[v1][v2]) v2++;
-                //cout << v1 << "begin" << v2 << endl;
                 return {G, v1, v2};
             }
             iterator end()const {

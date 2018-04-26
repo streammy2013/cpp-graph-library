@@ -13,6 +13,14 @@ namespace std_graph_lib {
         using edge_handle = pair<node_handle, node_handle>;
         using cost_type = E;
         struct edge {
+            edge() {}
+            edge (node_handle t, E i) {
+                to = t;
+                info = i;
+            }
+            node_handle get_to() {return to; }
+            E& get_info() {return info; }
+        private:
             node_handle to;
             E info;
         };
@@ -27,8 +35,8 @@ namespace std_graph_lib {
         E end_to_edge (node_handle h1, node_handle h2) {
             size_t v = handle_to_id[h1];
             for (int j = 0; j < adj_list[v].size(); j++) {
-                if (adj_list[v][j].to == h2) {
-                    return adj_list[v][j].info;
+                if (adj_list[v][j].get_to() == h2) {
+                    return adj_list[v][j].get_info();
                 }
             }
         }
@@ -41,9 +49,11 @@ namespace std_graph_lib {
                 node_vector.push_back(info);
                 node_flag.push_back(true);
                 adj_list.push_back(vector<edge>());
+                id_to_handle.push_back(user_handle);
             } else {
                 node_vector[id] = info;
                 node_flag[id] = true;
+                id_to_handle[id] = user_handle;
             }
             handle_to_id[user_handle] = id;
             return user_handle;
@@ -57,7 +67,7 @@ namespace std_graph_lib {
             for (int i = 0; i < node_vector.size(); i++) {
                 if (node_flag[i]) {
                     for (int j = 0; j < adj_list[i].size(); j++) {
-                        if (adj_list[i][j].to == handle) {
+                        if (adj_list[i][j].get_to() == handle) {
                             adj_list[i].erase(adj_list[i].begin() + j);
                         }
                     }
@@ -88,7 +98,7 @@ namespace std_graph_lib {
             int i = 0;
             for (i = 0; i < adj_list[v1].size(); i++) {
                 //if (!node_flag[e.first]) continue;
-                if (adj_list[v1][i].to == e.second)
+                if (adj_list[v1][i].get_to() == e.second)
                     break;
             }
             if (i == adj_list[v1].size()) return;
@@ -109,6 +119,36 @@ namespace std_graph_lib {
                     }
                 }                
             }
+        }
+        struct nodes {
+            directed_sparse_graph& G;
+            struct iterator {
+                directed_sparse_graph& G;
+                node_handle v;
+                bool operator!=(iterator it) {
+                    return v != it.v;
+                }
+                iterator& operator++() {
+                    v++;
+                    while (v < G.node_vector.size() && !G.node_flag[v]) v++;
+                    return *this;
+                }
+                node_handle operator*() {
+                    node_handle h = G.id_to_handle[v];
+                    return h;
+                }
+            };
+            iterator begin()const {
+                size_t v = 0;
+                while (v < G.node_vector.size() && !G.node_flag[v]) v++;
+                return {G, v};
+            }
+            iterator end()const {
+                return {G, G.node_vector.size()};
+            }
+        };
+        nodes all_nodes() {
+            return {*this};
         }
         struct out_edges {
 		    directed_sparse_graph& G;
@@ -131,12 +171,13 @@ namespace std_graph_lib {
                     return *this;
                 }
                 fake operator*() {
-                    return {G.adj_list[v1][idx].to, G.adj_list[v1][idx].info};
+                    cout<< G.adj_list[v1][idx].get_info().to_string() << endl;
+                    return {G.adj_list[v1][idx].get_to(), G.adj_list[v1][idx].get_info()};
                 }
             };
             iterator begin()const {
                 if (G.adj_list[v1].size() == 0) return end();
-                else return {G, v1, 0, G.adj_list[v1][0].to};
+                else return {G, v1, 0, G.adj_list[v1][0].get_to()};
             }
             iterator end()const {
                 return {G, v1, G.adj_list[v1].size(), G.adj_list[v1].size()};
@@ -161,6 +202,7 @@ namespace std_graph_lib {
         vector<vector<edge>> adj_list;
         vector<bool> node_flag;
         unordered_map<node_handle, size_t> handle_to_id;
+        vector<node_handle> id_to_handle;
         size_t unique_handle;
         stack<size_t> recycle_handle;
         node_handle generate_handle() {

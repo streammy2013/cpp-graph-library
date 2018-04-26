@@ -14,8 +14,17 @@ namespace std_graph_lib {
         using edge_handle = pair<node_handle, node_handle>;
         using cost_type = E;
         struct edge { 
+            edge () {}
+            edge (node_handle t, E i) {
+                to = t;
+                info = i;
+            }
+            node_handle get_to() {return to;}
+            E& get_info() {return info;}
+        private:
             node_handle to; 
             E info; 
+            
         };
         fixed_directed_sparse_graph(){}
         fixed_directed_sparse_graph (int num) : node_num(num) {}
@@ -39,8 +48,8 @@ namespace std_graph_lib {
         E end_to_edge (node_handle h1, node_handle h2) {
             int i = 0;
             for (i = 0; i < adj_list[h1].size(); i++) {
-                if (adj_list[h1][i].to == h2)
-                    return adj_list[h1][i].info;
+                if (adj_list[h1][i].get_to() == h2)
+                    return adj_list[h1][i].get_info();
             }
             //return nullptr;
         }
@@ -67,7 +76,7 @@ namespace std_graph_lib {
             }
             int i = 0;
             for (i = 0; i < adj_list[e.first].size(); i++) {
-                if (adj_list[e.first][i].to == e.second)
+                if (adj_list[e.first][i].get_to() == e.second)
                     break;
             }
             if (i == adj_list[e.first].size()) return;
@@ -85,6 +94,32 @@ namespace std_graph_lib {
                     cout << to << ", " << info.to_string() << endl;
                 }
             }
+        }
+        struct nodes {
+            fixed_directed_sparse_graph& G;
+            struct iterator {
+                fixed_directed_sparse_graph& G;
+                node_handle v;
+                bool operator!=(iterator it) {
+                    return v != it.v;
+                }
+                iterator& operator++() {
+                    v++;
+                    return *this;
+                }
+                node_handle operator*() {
+                    return v;
+                }
+            };
+            iterator begin()const {
+                return {G, 0};
+            }
+            iterator end()const {
+                return {G, G.node_vector.size()};
+            }
+        };
+        nodes all_nodes() {
+            return {*this};
         }
         struct out_edges {
 		    fixed_directed_sparse_graph& G;
@@ -107,12 +142,13 @@ namespace std_graph_lib {
                     return *this;
                 }
                 fake operator*() {
-                    return {G.adj_list[v1][idx].to, G.adj_list[v1][idx].info};
+                    //cout<< G.adj_list[v1][idx].get_info().to_string() << endl;
+                    return {G.adj_list[v1][idx].get_to(), G.adj_list[v1][idx].get_info()};
                 }
             };
             iterator begin()const {
                 if (G.adj_list[v1].size() == 0) return end();
-                else return {G, v1, 0, G.adj_list[v1][0].to};
+                else return {G, v1, 0, G.adj_list[v1][0].get_to()};
             }
             iterator end()const {
                 return {G, v1, G.adj_list[v1].size(), G.adj_list[v1].size()};

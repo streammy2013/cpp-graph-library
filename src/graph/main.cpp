@@ -26,6 +26,9 @@ void fixed_dense_tests() {
     auto e3 = fddg.insert_edge(v1, v3, dis(2130));
     auto e4 = fddg.insert_edge(v0, v2, dis(2793));
     auto e5 = fddg.insert_edge(v2, v3, dis(2016));
+    for (const auto& node : fddg.all_nodes()) {
+        cout << node << endl;
+    }
     fddg.print_graph();
     shared_ptr<path<G, typename G::node_handle>> bfs_path = bfs_findpath(fddg, v0, v3);
     bfs_path->print_path();
@@ -50,6 +53,9 @@ void fixed_sparse_tests() {
     auto e3 = fdsg.insert_edge(v1, v3, dis(2130));
     auto e4 = fdsg.insert_edge(v0, v2, dis(2793));
     auto e5 = fdsg.insert_edge(v2, v3, dis(2016));
+    for (const auto& node : fdsg.all_nodes()) {
+        cout << node << endl;
+    }
     fdsg.print_graph();
     shared_ptr<path<G, typename G::node_handle>> bfs_path = bfs_findpath(fdsg, v0, v3);
     bfs_path->print_path();
@@ -73,12 +79,18 @@ void dense_tests() {
     auto e3 = ddg.insert_edge(v1, v3, dis(2130));
     auto e4 = ddg.insert_edge(v0, v2, dis(2793));
     auto e5 = ddg.insert_edge(v2, v3, dis(2016));
+    for (const auto& node : ddg.all_nodes()) {
+        cout << node << endl;
+    }
     ddg.print_graph();
     shared_ptr<path<G, typename G::node_handle>> bfs_path = bfs_findpath(ddg, v0, v3);
     bfs_path->print_path();
     shared_ptr<path<G, typename G::node_handle>> dfs_path = dfs_findpath(ddg, v0, v3);
     dfs_path->print_path();
     ddg.erase_node(v3);
+    for (const auto& node : ddg.all_nodes()) {
+        cout << node << endl;
+    }
     ddg.print_graph();
 
 }
@@ -99,12 +111,18 @@ void sparse_tests() {
     auto e3 = dsg.insert_edge(v1, v3, dis(2130));
     auto e4 = dsg.insert_edge(v0, v2, dis(2793));
     auto e5 = dsg.insert_edge(v2, v3, dis(2016));
+    for (const auto& node : dsg.all_nodes()) {
+        cout << node << endl;
+    }
     dsg.print_graph();
     shared_ptr<path<G, typename G::node_handle>> bfs_path = bfs_findpath(dsg, v0, v3);
     bfs_path->print_path();
     shared_ptr<path<G, typename G::node_handle>> dfs_path = dfs_findpath(dsg, v0, v3);
     dfs_path->print_path();
     dsg.erase_node(v3);
+    for (const auto& node : dsg.all_nodes()) {
+        cout << node << endl;
+    }
     dsg.print_graph();
 
 }
