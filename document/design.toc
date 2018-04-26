@@ -1,0 +1,21 @@
+\contentsline {section}{\numberline {1}Introduction}{2}
+\contentsline {section}{\numberline {2}Node}{2}
+\contentsline {section}{\numberline {3}Edge}{2}
+\contentsline {section}{\numberline {4}Graph Declarations}{2}
+\contentsline {subsection}{\numberline {4.1}General Design}{2}
+\contentsline {subsection}{\numberline {4.2}Lazy Update Strategy}{3}
+\contentsline {subsection}{\numberline {4.3}Graph Maintenance}{3}
+\contentsline {subsubsection}{\numberline {4.3.1}Constructor}{3}
+\contentsline {subsubsection}{\numberline {4.3.2}Insert Node}{4}
+\contentsline {subsubsection}{\numberline {4.3.3}Insert Edge}{4}
+\contentsline {subsubsection}{\numberline {4.3.4}Erase Edge}{4}
+\contentsline {subsection}{\numberline {4.4}Graph Visiting}{4}
+\contentsline {section}{\numberline {5}Graph Storage}{5}
+\contentsline {subsection}{\numberline {5.1}Dense Graph}{5}
+\contentsline {subsection}{\numberline {5.2}Sparse Graph}{5}
+\contentsline {subsection}{\numberline {5.3}Variable Graph}{5}
+\contentsline {subsection}{\numberline {5.4}Fixed Graph}{5}
+\contentsline {section}{\numberline {6}Path Functions}{5}
+\contentsline {subsection}{\numberline {6.1}Generic Path Exists Function}{5}
+\contentsline {subsection}{\numberline {6.2}Generic Path Finding Function}{5}
+\contentsline {section}{\numberline {7}For Developers}{5}
