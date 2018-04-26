@@ -8,6 +8,9 @@
 #include "directed_dense_graph_lib.h"
 #include "directed_sparse_graph_lib.h"
 #include "graph_concepts.h"
+#include <fstream>
+#include <string>
+#include <sstream>
 using namespace std;
 using namespace std_graph_lib;
 template <typename G, typename V, typename E>
@@ -126,10 +129,57 @@ void sparse_tests() {
     dsg.print_graph();
 
 }
+
+void load_map_data() {
+    vector<vector<double>> vec;
+    vector<string> cities;
+    string line;
+    string city_names;
+    ifstream myfile ("./distance.csv");
+    if (myfile.is_open())
+    {
+        getline (myfile,city_names);
+        stringstream ss_cities(city_names);
+        string city;
+        while (getline(ss_cities, city, ',')) {
+            cities.push_back(city);
+        }
+
+        while ( getline (myfile,line) )
+        {
+            vector<double> temp;
+            stringstream ss(line);
+            string item;
+            while (getline(ss, item, ',')) {
+                temp.push_back(std::stod(item));
+            }
+            vec.push_back(temp);
+        }
+        myfile.close();
+    }
+
+    fixed_directed_dense_graph<city, dis> city_map = fixed_directed_dense_graph<city, dis>(cities.size());
+
+    vector<size_t> nodes;
+
+    for (auto i = cities.begin(); i != cities.end(); ++i) {
+        nodes.insert(nodes.begin(), city_map.insert_node(city(*i)));
+    }
+
+    for (int i = 0; i < cities.size(); ++i) {
+        for (int j = 0; j < cities.size(); ++j) {
+            city_map.insert_edge(nodes[i], nodes[j], dis(vec[i][j]));
+        }
+    }
+
+    city_map.print_graph();
+}
+
 int main() {
-    
+
     fixed_dense_tests<fixed_directed_dense_graph<city, dis>, city, dis>();
     fixed_sparse_tests<fixed_directed_sparse_graph<city, dis>, city, dis>();
     dense_tests<directed_dense_graph<city, dis>, city, dis>();
     sparse_tests<directed_sparse_graph<city, dis>, city, dis>();
+    load_map_data();
 }
