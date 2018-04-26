@@ -12,6 +12,8 @@
 using namespace std;
 using namespace std_graph_lib;
 
+int null_prev = -1;
+
 template<typename G, typename MP>
 void dijstra(G g, typename G::node_handle s, MP& mp) {
     priority_queue<pair<typename MP::mapped_type, typename G::node_handle> > que;
@@ -154,6 +156,7 @@ void shortest_path_bf(G g, typename G::node_handle s,
                       unordered_map<typename G::node_handle, typename G::node_handle>& pi){
     for (auto v: g.all_nodes()) {
         d[v] = std::numeric_limits<int>::max();
+        pi[v] = -1;
     }
     d[s] = 0;
 
@@ -165,6 +168,27 @@ void shortest_path_bf(G g, typename G::node_handle s,
         }
     }
 }
+
+template<typename G>
+requires Graph<G>
+void print_path(G g, typename G::node_handle s, typename G::node_handle t,
+                      unordered_map<typename G::node_handle, typename G::node_handle>& pi){
+    string path = g.handle_to_info(t).to_string();
+    while(pi[t]!= null_prev) {
+        t = pi[t];
+        path = g.handle_to_info(t).to_string() + " " + path;
+    }
+
+    cout << path << endl;
+}
+
+
+//template<typename G>
+//requires Graph<G>
+//void get_path(typename G::node_handle s, typename G::node_handle t,
+//              unordered_map<typename G::node_handle, typename G::node_handle>& pi) {
+//
+//}
 //
 //template<typename G>
 //requires Graph<G>

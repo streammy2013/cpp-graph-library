@@ -201,7 +201,8 @@ void test_shortest_path() {
     unordered_map<size_t, size_t> pi;
 
     shortest_path_bf(fddg, s, d, pi);
-    cout << d[t] << endl;
+    cout << pi[s] << endl;
+    print_path(fddg, s, t, pi);
 }
 
 int main() {
