@@ -179,6 +179,56 @@ void load_map_data() {
 
 }
 
+template<typename G, typename V, typename E>
+requires Graph<G> && Node_info<V> && Edge_info<E>
+void load_circle_data() {
+    int num = 4039;
+    vector<vector<int>> vec;
+    string line;
+    ifstream myfile ("./facebook_combined.txt");
+    if (myfile.is_open())
+    {
+        while ( getline (myfile,line) )
+        {
+            vector<int> temp;
+            stringstream ss(line);
+            string item;
+            while (getline(ss, item, ' ')) {
+                temp.push_back(std::stod(item));
+            }
+            vec.push_back(temp);
+        }
+        myfile.close();
+    }
+
+    fixed_directed_dense_graph<city, dis> circles = fixed_directed_dense_graph<city, dis>(num);
+
+    vector<size_t> nodes;
+
+    for (int i = 0; i < num; ++i) {
+        nodes.push_back(circles.insert_node(city(to_string(i))));
+    }
+
+    int j = 0;
+
+    for (auto i = vec.begin(); i != vec.end(); ++i) {
+        circles.insert_edge(nodes[(*i)[0]], nodes[(*i)[1]], 1);
+        circles.insert_edge(nodes[(*i)[1]], nodes[(*i)[0]], 1);
+    }
+
+
+
+    shared_ptr<path<G, typename G::node_handle>> bfs_path = bfs_findpath(circles, nodes[594], nodes[4031]);
+    cout << "4038: " << nodes[4038] << endl;
+//    bfs_path->print_path();
+
+//    unordered_map<size_t, int> d;
+//    unordered_map<size_t, size_t> pi;
+
+//    shortest_path_bf(circles, nodes[0], d, pi);
+
+}
+
 void test_shortest_path() {
     fixed_directed_dense_graph<city, dis> fddg = fixed_directed_dense_graph<city, dis>(6);
     auto s = fddg.insert_node(city("s"));
@@ -207,10 +257,11 @@ void test_shortest_path() {
 
 int main() {
 
-    fixed_dense_tests<fixed_directed_dense_graph<city, dis>, city, dis>();
-    fixed_sparse_tests<fixed_directed_sparse_graph<city, dis>, city, dis>();
-    dense_tests<directed_dense_graph<city, dis>, city, dis>();
-    sparse_tests<directed_sparse_graph<city, dis>, city, dis>();
+//    fixed_dense_tests<fixed_directed_dense_graph<city, dis>, city, dis>();
+//    fixed_sparse_tests<fixed_directed_sparse_graph<city, dis>, city, dis>();
+//    dense_tests<directed_dense_graph<city, dis>, city, dis>();
+//    sparse_tests<directed_sparse_graph<city, dis>, city, dis>();
 //    load_map_data();
-    test_shortest_path();
+    load_circle_data<fixed_directed_dense_graph<city, dis>, city, dis>();
+//    test_shortest_path();
 }
