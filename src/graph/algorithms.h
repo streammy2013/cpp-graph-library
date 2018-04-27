@@ -96,7 +96,7 @@ shared_ptr<path<G, typename G::node_handle>> generic_findpath(G g, typename G::n
         auto v = container.top();
         container.pop();
         //cout << v->handle << endl;
-        cout << v->cost.to_string() << endl;
+        //cout << v->cost.to_string() << endl;
         if (v->handle == e) {
             //backtrack path
             vector<node_handle> node_handles;
@@ -162,8 +162,11 @@ void shortest_path_bf(G g, typename G::node_handle s,
 
     for (auto v: g.all_nodes()) {
         for (auto v2: g.all_nodes()) {
-            for (auto e: g.out(v2)) {
-                relax<G>(g, v2, e.to, d, pi);
+            for (const auto& e: g.out(v2)) {
+                if (d[e.to] > d[v2] + e.info.get_val()){
+                    d[e.to] = d[v2] + e.info.get_val();
+                    pi[e.to] = v2;
+                }
             }
         }
     }

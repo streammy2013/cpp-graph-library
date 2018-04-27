@@ -4,8 +4,6 @@
 #include <memory>
 #include "graph_concepts.h"
 #include "graph.h"
-#include <chrono>
-using namespace std::chrono;
 using namespace std;
 using namespace std_graph_lib;
 template<typename G>
@@ -16,9 +14,14 @@ struct node_state: public std::enable_shared_from_this<node_state<G>> {
     using Cost = typename G::cost_type;
     node_handle handle;
     shared_ptr<node_state<G>> parent;
-    G& graph;
+    G graph;
     Cost cost;
-    node_state(node_handle v, shared_ptr<node_state<G>> p, G& g, Cost c): handle(v), parent(p), graph(g), cost(c) {}
+    node_state(node_handle v, shared_ptr<node_state<G>> p, G& g, Cost c) {
+        handle = v;
+        parent = p;
+        graph = g;
+        cost = c;
+    }
     bool operator==(const node_state& cns) const {
         // different graph may have same handle;
         return handle == cns.handle && graph == cns.handle;
@@ -42,14 +45,7 @@ struct node_state: public std::enable_shared_from_this<node_state<G>> {
         for (const auto& e: graph.out(handle)) {
             // TODO
             const typename G::cost_type edge_cost = e.info.get_val();
-            //cout << edge_cost << endl;
-            //typedef std::chrono::high_resolution_clock myclock;
-            //myclock::time_point beginning = myclock::now();
-            shared_ptr<node_state<G>> o1 = make_shared<node_state<G>>(e.to, this->shared_from_this(), graph, cost + edge_cost);
-
-
-            //cout << duration_cast<milliseconds>(myclock::now() - beginning).count() << endl;
-            out.push_back(o1);
+            out.push_back(make_shared<node_state<G>>(e.to, this->shared_from_this(), graph, cost + edge_cost));
         }
         return out;
     }
@@ -59,13 +55,12 @@ requires Node_handler<H>
 struct path {
     vector<H> path_handles;
     G graph;
-    void set_graph (G g) {
+    void set_graph (G& g) {
         graph = g;
     }
     void print_path () {
         cout << "The path is " << endl;
         for (int i = 0; i < path_handles.size() - 1; i++) {
-            cout << "handle " << path_handles[i] << endl;
             cout << graph.handle_to_info(path_handles[i]).to_string();
             cout << " to ";
             cout << graph.handle_to_info(path_handles[i + 1]).to_string();

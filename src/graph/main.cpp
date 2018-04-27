@@ -235,11 +235,11 @@ void load_circle_data() {
 //    circles.print_graph();
 
     auto start = chrono::system_clock::now();
-//    unordered_map<size_t, int> d;
-//    unordered_map<size_t, size_t> pi;
-//    shortest_path_bf(cs, nodes[1], d, pi);
-    cout << "Sparse Result: " << bfs_pathexists(cs, nodes[278], nodes[3789]) << endl;
-//    cout << "Sparse Result: " << d[nodes[57]] << endl;
+    unordered_map<size_t, int> d;
+    unordered_map<size_t, size_t> pi;
+    shortest_path_bf(cs, nodes[1], d, pi);
+//    cout << "Sparse Result: " << bfs_pathexists(cs, nodes[278], nodes[3789]) << endl;
+    cout << "Sparse Result: " << d[nodes[57]] << endl;
 
     auto end = chrono::system_clock::now();
     chrono::duration<double> time_cost = (end - start);
@@ -247,12 +247,12 @@ void load_circle_data() {
 
     start = chrono::system_clock::now();
 
-//    unordered_map<size_t, int> d2;
-//    unordered_map<size_t, size_t> pi2;
+   unordered_map<size_t, int> d2;
+    unordered_map<size_t, size_t> pi2;
 
-//    shortest_path_bf(cd, nodes[1], d2, pi2);
-    cout << "Dense Result: " << bfs_pathexists(cd, nodes[278], nodes[3789]) << endl;
-//    cout << "Dense Result: " << d2[nodes[57]] << endl;
+    shortest_path_bf(cd, nodes[1], d2, pi2);
+    //cout << "Dense Result: " << bfs_pathexists(cd, nodes[278], nodes[3789]) << endl;
+    cout << "Dense Result: " << d2[nodes[57]] << endl;
 
     end = chrono::system_clock::now();
     time_cost = (end - start);
@@ -260,12 +260,12 @@ void load_circle_data() {
 
     start = chrono::system_clock::now();
 
-//    unordered_map<size_t, int> d3;
-//    unordered_map<size_t, size_t> pi3;
+    unordered_map<size_t, int> d3;
+    unordered_map<size_t, size_t> pi3;
 
-//    shortest_path_bf(cfd, nodes[1], d3, pi3);
-    cout << "Fixed Dense Result: " << bfs_pathexists(cfd, nodes[278], nodes[3789]) << endl;
-//    cout << "Fixed Dense Result: " << d3[nodes[57]] << endl;
+    shortest_path_bf(cfd, nodes[1], d3, pi3);
+ //   cout << "Fixed Dense Result: " << bfs_pathexists(cfd, nodes[278], nodes[3789]) << endl;
+   cout << "Fixed Dense Result: " << d3[nodes[57]] << endl;
 
     end = chrono::system_clock::now();
     time_cost = (end - start);
@@ -273,17 +273,45 @@ void load_circle_data() {
 
     start = chrono::system_clock::now();
 
-//    unordered_map<size_t, int> d4;
-//    unordered_map<size_t, size_t> pi4;
+    unordered_map<size_t, int> d4;
+    unordered_map<size_t, size_t> pi4;
 
-//    shortest_path_bf(cfs, nodes[1], d4, pi4);
-    cout << "Fixed Sparse Result: " << bfs_pathexists(cfs, nodes[278], nodes[3789]) << endl;
-//    cout << "Fixed Sparse Result: " << d4[nodes[57]] << endl;
+    shortest_path_bf(cfs, nodes[1], d4, pi4);
+//    cout << "Fixed Sparse Result: " << bfs_pathexists(cfs, nodes[278], nodes[3789]) << endl;
+    cout << "Fixed Sparse Result: " << d4[nodes[57]] << endl;
 
     end = chrono::system_clock::now();
     time_cost = (end - start);
     cout << "Fixed Sparse Time: " << time_cost.count() << "s." << "\n";
 
+    cout << "Test BFS find path:" << endl;
+    start = chrono::system_clock::now();
+    shared_ptr<path<directed_dense_graph<city, dis>, typename directed_dense_graph<city, dis>::node_handle>> bfs_path_1 = bfs_findpath(cd, nodes[1], nodes[57]);
+    bfs_path_1->print_path();
+    end = chrono::system_clock::now();
+    time_cost = (end - start);
+    cout << "Dense Time: " << time_cost.count() << "s." << "\n";
+
+    start = chrono::system_clock::now();
+    shared_ptr<path<directed_sparse_graph<city, dis>, typename directed_dense_graph<city, dis>::node_handle>> bfs_path_2 = bfs_findpath(cs, nodes[1], nodes[57]);
+    bfs_path_2->print_path();
+    end = chrono::system_clock::now();
+    time_cost = (end - start);
+    cout << "Sparse Time: " << time_cost.count() << "s." << "\n";
+
+    start = chrono::system_clock::now();
+    shared_ptr<path<fixed_directed_dense_graph<city, dis>, typename fixed_directed_dense_graph<city, dis>::node_handle>> bfs_path_4 = bfs_findpath(cfd, nodes[1], nodes[57]);
+    bfs_path_4->print_path();
+    end = chrono::system_clock::now();
+    time_cost = (end - start);
+    cout << "Fixed Dense Time: " << time_cost.count() << "s." << "\n";
+
+    start = chrono::system_clock::now();
+    shared_ptr<path<fixed_directed_sparse_graph<city, dis>, typename fixed_directed_sparse_graph<city, dis>::node_handle>> bfs_path_3 = bfs_findpath(cfs, nodes[1], nodes[57]);
+    bfs_path_3->print_path();
+    end = chrono::system_clock::now();
+    time_cost = (end - start);
+    cout << "Fixed Sparse Time: " << time_cost.count() << "s." << "\n";
 
 }
 
@@ -320,7 +348,7 @@ int main() {
 //    fixed_sparse_tests<fixed_directed_sparse_graph<city, dis>, city, dis>();
 //    dense_tests<directed_dense_graph<city, dis>, city, dis>();
 //    sparse_tests<directed_sparse_graph<city, dis>, city, dis>();
-//    load_map_data();
+    load_map_data();
     load_circle_data<fixed_directed_dense_graph<city, dis>, city, dis>();
 //    test_shortest_path();
 }

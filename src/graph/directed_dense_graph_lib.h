@@ -29,7 +29,7 @@ namespace std_graph_lib {
         }
 
         V handle_to_info (node_handle h) {
-            size_t v = handle_to_id[v];
+            size_t v = handle_to_id[h];
             return node_vector[v];
         }
         E end_to_edge (node_handle h1, node_handle h2) {

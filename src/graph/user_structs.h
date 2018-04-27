@@ -2,6 +2,7 @@
 #define USER_STRUCTS_H
 
 #include "graph.h"
+// node
 struct city {
     string name;
     city(string input): name(input) {} 
