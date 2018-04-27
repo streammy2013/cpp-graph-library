@@ -183,10 +183,13 @@ void load_map_data() {
 template<typename G, typename V, typename E>
 requires Graph<G> && Node_info<V> && Edge_info<E>
 void load_circle_data() {
+//    int num = 348;
     int num = 4039;
     vector<vector<int>> vec;
     string line;
+//    ifstream myfile ("./0.edges");
     ifstream myfile ("./facebook_combined.txt");
+
     if (myfile.is_open())
     {
         while ( getline (myfile,line) )
@@ -202,52 +205,97 @@ void load_circle_data() {
         myfile.close();
     }
 
-    directed_dense_graph<V, E> circles = directed_dense_graph<V, E>();
-    directed_sparse_graph<V, E> circles2 = directed_sparse_graph<V, E>();
+    directed_sparse_graph<V, E> cs = directed_sparse_graph<V, E>();
+    fixed_directed_sparse_graph<V, E> cfs = fixed_directed_sparse_graph<V, E>(num);
+    fixed_directed_dense_graph<V, E> cfd = fixed_directed_dense_graph<V, E>(num);
+    directed_dense_graph<V, E> cd = directed_dense_graph<V, E>();
 
     vector<size_t> nodes;
 
     for (int i = 0; i < num; ++i) {
-        nodes.push_back(circles.insert_node(city(to_string(i))));
-        circles2.insert_node(city(to_string(i)));
+        nodes.push_back(cs.insert_node(city(to_string(i))));
+        cfs.insert_node(city(to_string(i)));
+        cd.insert_node(city(to_string(i)));
+        cfd.insert_node(city(to_string(i)));
     }
 
     int j = 0;
 
     for (auto i = vec.begin(); i != vec.end(); ++i) {
-        circles.insert_edge(nodes[(*i)[0]], nodes[(*i)[1]], 1);
-        circles.insert_edge(nodes[(*i)[1]], nodes[(*i)[0]], 1);
-        circles2.insert_edge(nodes[(*i)[0]], nodes[(*i)[1]], 1);
-        circles2.insert_edge(nodes[(*i)[1]], nodes[(*i)[0]], 1);
+        cs.insert_edge(nodes[(*i)[0]], nodes[(*i)[1]], 1);
+        cs.insert_edge(nodes[(*i)[1]], nodes[(*i)[0]], 1);
+        cfs.insert_edge(nodes[(*i)[0]], nodes[(*i)[1]], 1);
+        cfs.insert_edge(nodes[(*i)[1]], nodes[(*i)[0]], 1);
+        cfd.insert_edge(nodes[(*i)[0]], nodes[(*i)[1]], 1);
+        cfd.insert_edge(nodes[(*i)[1]], nodes[(*i)[0]], 1);
+        cd.insert_edge(nodes[(*i)[0]], nodes[(*i)[1]], 1);
+        cd.insert_edge(nodes[(*i)[1]], nodes[(*i)[0]], 1);
     }
 
-    auto start = chrono::system_clock::now();
+//    circles.print_graph();
 
-    cout << "Dense Result: " << bfs_pathexists(circles, nodes[1], nodes[57]) << endl;
+    auto start = chrono::system_clock::now();
+//    unordered_map<size_t, int> d;
+//    unordered_map<size_t, size_t> pi;
+//    shortest_path_bf(cs, nodes[1], d, pi);
+    cout << "Sparse Result: " << bfs_pathexists(cs, nodes[278], nodes[3789]) << endl;
+//    cout << "Sparse Result: " << d[nodes[57]] << endl;
 
     auto end = chrono::system_clock::now();
     chrono::duration<double> time_cost = (end - start);
+    cout << "Sparse Time: " << time_cost.count() << "s." << "\n";
+
+    start = chrono::system_clock::now();
+
+//    unordered_map<size_t, int> d2;
+//    unordered_map<size_t, size_t> pi2;
+
+//    shortest_path_bf(cd, nodes[1], d2, pi2);
+    cout << "Dense Result: " << bfs_pathexists(cd, nodes[278], nodes[3789]) << endl;
+//    cout << "Dense Result: " << d2[nodes[57]] << endl;
+
+    end = chrono::system_clock::now();
+    time_cost = (end - start);
     cout << "Dense Time: " << time_cost.count() << "s." << "\n";
 
     start = chrono::system_clock::now();
 
-    cout << "Sparse Result: " << bfs_pathexists(circles2, nodes[1], nodes[57]) << endl;
+//    unordered_map<size_t, int> d3;
+//    unordered_map<size_t, size_t> pi3;
+
+//    shortest_path_bf(cfd, nodes[1], d3, pi3);
+    cout << "Fixed Dense Result: " << bfs_pathexists(cfd, nodes[278], nodes[3789]) << endl;
+//    cout << "Fixed Dense Result: " << d3[nodes[57]] << endl;
 
     end = chrono::system_clock::now();
     time_cost = (end - start);
-    cout << "Sparse Time: " << time_cost.count() << "s." << "\n";
+    cout << "Fixed Dense Time: " << time_cost.count() << "s." << "\n";
+
+    start = chrono::system_clock::now();
+
+//    unordered_map<size_t, int> d4;
+//    unordered_map<size_t, size_t> pi4;
+
+//    shortest_path_bf(cfs, nodes[1], d4, pi4);
+    cout << "Fixed Sparse Result: " << bfs_pathexists(cfs, nodes[278], nodes[3789]) << endl;
+//    cout << "Fixed Sparse Result: " << d4[nodes[57]] << endl;
+
+    end = chrono::system_clock::now();
+    time_cost = (end - start);
+    cout << "Fixed Sparse Time: " << time_cost.count() << "s." << "\n";
 
 
 }
 
 void test_shortest_path() {
-    fixed_directed_dense_graph<city, dis> fddg = fixed_directed_dense_graph<city, dis>(6);
+    fixed_directed_dense_graph<city, dis> fddg = fixed_directed_dense_graph<city, dis>(7);
     auto s = fddg.insert_node(city("s"));
     auto t = fddg.insert_node(city("t"));
     auto a = fddg.insert_node(city("a"));
     auto b = fddg.insert_node(city("b"));
     auto c = fddg.insert_node(city("c"));
     auto f = fddg.insert_node(city("f"));
+    auto g = fddg.insert_node(city("g"));
     auto e1 = fddg.insert_edge(s, a, dis(3));
     auto e2 = fddg.insert_edge(s, b, dis(4));
     auto e3 = fddg.insert_edge(a, c, dis(2));
@@ -262,7 +310,7 @@ void test_shortest_path() {
     unordered_map<size_t, size_t> pi;
 
     shortest_path_bf(fddg, s, d, pi);
-    cout << pi[s] << endl;
+    cout << d[g] << endl;
     print_path(fddg, s, t, pi);
 }
 
@@ -274,8 +322,5 @@ int main() {
 //    sparse_tests<directed_sparse_graph<city, dis>, city, dis>();
 //    load_map_data();
     load_circle_data<fixed_directed_dense_graph<city, dis>, city, dis>();
-//    load_circle_data<fixed_directed_sparse_graph<city, dis>, city, dis>();
-//    load_circle_data<directed_dense_graph<city, dis>, city, dis>();
-//    load_circle_data<directed_sparse_graph<city, dis>, city, dis>();
 //    test_shortest_path();
 }

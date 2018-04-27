@@ -167,11 +167,11 @@ namespace std_graph_lib {
                 }
                 iterator& operator++() { 
                     idx++;
-                    while (idx < G.adj_list[v1].size()) idx++;
+//                    while (idx < G.adj_list[v1].size()) idx++;
                     return *this;
                 }
                 fake operator*() {
-                    cout<< G.adj_list[v1][idx].get_info().to_string() << endl;
+//                    cout<< G.adj_list[v1][idx].get_info().to_string() << endl;
                     return {G.adj_list[v1][idx].get_to(), G.adj_list[v1][idx].get_info()};
                 }
             };
