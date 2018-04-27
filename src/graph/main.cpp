@@ -11,6 +11,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <chrono>
 using namespace std;
 using namespace std_graph_lib;
 template <typename G, typename V, typename E>
@@ -201,12 +202,14 @@ void load_circle_data() {
         myfile.close();
     }
 
-    fixed_directed_dense_graph<city, dis> circles = fixed_directed_dense_graph<city, dis>(num);
+    directed_dense_graph<V, E> circles = directed_dense_graph<V, E>();
+    directed_sparse_graph<V, E> circles2 = directed_sparse_graph<V, E>();
 
     vector<size_t> nodes;
 
     for (int i = 0; i < num; ++i) {
         nodes.push_back(circles.insert_node(city(to_string(i))));
+        circles2.insert_node(city(to_string(i)));
     }
 
     int j = 0;
@@ -214,18 +217,26 @@ void load_circle_data() {
     for (auto i = vec.begin(); i != vec.end(); ++i) {
         circles.insert_edge(nodes[(*i)[0]], nodes[(*i)[1]], 1);
         circles.insert_edge(nodes[(*i)[1]], nodes[(*i)[0]], 1);
+        circles2.insert_edge(nodes[(*i)[0]], nodes[(*i)[1]], 1);
+        circles2.insert_edge(nodes[(*i)[1]], nodes[(*i)[0]], 1);
     }
 
+    auto start = chrono::system_clock::now();
 
+    cout << "Dense Result: " << bfs_pathexists(circles, nodes[1], nodes[57]) << endl;
 
-    shared_ptr<path<G, typename G::node_handle>> bfs_path = bfs_findpath(circles, nodes[594], nodes[4031]);
-    cout << "4038: " << nodes[4038] << endl;
-//    bfs_path->print_path();
+    auto end = chrono::system_clock::now();
+    chrono::duration<double> time_cost = (end - start);
+    cout << "Dense Time: " << time_cost.count() << "s." << "\n";
 
-//    unordered_map<size_t, int> d;
-//    unordered_map<size_t, size_t> pi;
+    start = chrono::system_clock::now();
 
-//    shortest_path_bf(circles, nodes[0], d, pi);
+    cout << "Sparse Result: " << bfs_pathexists(circles2, nodes[1], nodes[57]) << endl;
+
+    end = chrono::system_clock::now();
+    time_cost = (end - start);
+    cout << "Sparse Time: " << time_cost.count() << "s." << "\n";
+
 
 }
 
@@ -263,5 +274,8 @@ int main() {
 //    sparse_tests<directed_sparse_graph<city, dis>, city, dis>();
 //    load_map_data();
     load_circle_data<fixed_directed_dense_graph<city, dis>, city, dis>();
+//    load_circle_data<fixed_directed_sparse_graph<city, dis>, city, dis>();
+//    load_circle_data<directed_dense_graph<city, dis>, city, dis>();
+//    load_circle_data<directed_sparse_graph<city, dis>, city, dis>();
 //    test_shortest_path();
 }
