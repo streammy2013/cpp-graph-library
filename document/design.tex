@@ -1,5 +1,12 @@
 \documentclass[]{article}
-\usepackage{listings} 
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset { %
+	language=C++,
+	backgroundcolor=\color{black!5}, % set backgroundcolor
+	basicstyle=\footnotesize,% basic font setting
+}
+
 \usepackage{graphicx} 
 %opening
 \title{C++ Directed Graph Library Design Report}
@@ -47,15 +54,28 @@ In this way, we have four different kinds of graphs. We use inheritance to show 
 	
 	\label{fig:graph}
 \end{figure}
-The base graph class is an abstract class. Here we define some fundamental functions for all graphs, including,
-\begin{itemize}
-	\item
-\end{itemize}
+The base graph class is an abstract class. Here we define some fundamental members and functions for all graphs, including,
+\begin{lstlisting}
+template<typename V, typename E>
+    class graph {        
+    public:     
+        using node_handle = size_t;
+        using edge_handle = pair<size_t, size_t>;   
+        graph() {}
+        virtual ~graph()=0;
+        virtual node_handle insert_node(V)=0;
+        virtual edge_handle insert_edge(node_handle, node_handle, E)=0;
+        virtual void erase_edge(edge_handle)=0;
+        virtual void print_graph()=0;
+    private:
+        vector<V> node_vector;
+    };
+\end{lstlisting}
 The directed\_graph is inherited from base graph class. For now, it does not have any special functions. We put it here is for future inheritance, such as directed acyclic graphs or directed trees.
 
 Next, the four graphs we defined above are all inherited from directed\_graph. Besides implementing the parent class functions, each graph has other special functions based on the underlying data structures. In the following sections, we will show several aspects of each graph's design.
 \subsection {Lazy Update Strategy}
-
+The lazy update strategy is, when we need to remove a node from node\_vector or matrix/list, we will not really delete the value. Instead, we have an indicator to check whether this value is valid. And when we need to re-use this space, we can directly update to new value. It is of use in frequently updated graphs.
 
 \subsection{Graph Maintenance} 
 For a general graph, we have several fundamental functions to maintain it.
@@ -98,13 +118,10 @@ struct container {
 	iterator end()const {}
 };
 \end{lstlisting}
-edge inline
-concept
 \section{Graph Storage}
 \subsection{Dense Graph}
 We use adjacency matrix to store graph, because the graph is dense. The element in this matrix is the information of the edge. We use vector to store this structure, so the declaration is,
 
-% 代码环境  
 \begin{lstlisting}
 vector<vector<E>> adj_matrix;
 
@@ -116,24 +133,73 @@ To mark the validness of each edge, we have another matrix as the flag matrix de
 vector<vector<bool>> matrix_flag;
 \end{lstlisting}
 
-It is intented the dimension of adjacency matrix is fixed when the graph gets constructed. Therefore, the constructor receives a number indicating the max number of the nodes in this graph. Then, it initialze both the adjacency matrix and flag matrix to this fixed dimension by calling push\_back function of std::vector.
-
-
-For this kind of graph, inserting a node is easy. Firstly, we generate an unique identifier that is the size of node\_vector. Next, we need check if this identifier exceeds the upper bound. If not, we put this node's information into node\_vector.
-
-The argument of function insert\_edge are two node\_handle and the information. What the function does is put this information to corresponding location in adj\_matrix, and set the flag to true.
-
-To erase an edge, we use the late update policy by just setting the flag to false.
-
 
 
 \subsection{Sparse Graph}
-\subsection{Variable Graph}
-\subsection{Fixed Graph}
+For any sparse graph, using an adjacency list is more efficient than an adjacency matrix. It is natural to come up with idea using \textbf{\textcolor{blue}{unordered\_map}} because the row in adjacency list is not fixed. However, as we know, in C++ , the underlying data structure of \textbf{\textcolor{blue}{unordered\_map}} is a hash table. Besides, it also needs strategy to avoid conflicts. Therefore, we figured a simpler way just using \textbf{\textcolor{blue}{vector}}. The interface is,
+\begin{lstlisting}
+vector<vector<edge>> adj_list;
 
-\section{Path Functions}
-\subsection{Generic Path Exists Function}
-\subsection{Generic Path Finding Function}
+\end{lstlisting} 
+Here \textbf{\textcolor{blue}{edge}} is a nested \textbf{\textcolor{blue}{struct}} in \textbf{Graph}. For the adjacency list, in addition to the information, we also need to store the end node of each edge. A nested \textbf{\textcolor{blue}{struct}} is convenient.
+
+The constructor of sparse graph will not allocate space. Instead, when inserting a node, we push a vector into adj\_list. 
+
+Inserting an edge is just to push a \textbf{edge} to the vector corresponding to the start node. However, when we want erase an edge, we need to traverse this whole vector. This method is expected because the structure of adjacency list. 
+\subsection{Fixed Graph}
+Sometimes, using a graph with fixed number of nodes is enough, while the maintenance cost is much smaller.
+Therefore, it is necessary for us to design a time-efficient class for such needs.
+
+The constructor will have an argument that decides the number of nodes that cannot be changed later. Then,
+it allocate space for node\_vector and adjacency matrix/list.
+
+In fixed graphs, adding node or adding edge are easy. When we need to erase an edge, the laze update policy is applied. Erasing nodes are not allowed.
+
+\subsection{Variable Graph}
+The design is more complicated for variable graph. Firstly, when we need to erase a node, we need to remove all the edges related to this node.
+Secondly, after we remove a node, we need to figure an efficient approach to recycle this identifier and manage the resources.
+
+To solve these two problem, we have two policies:
+\begin{itemize}
+\item Lazy update policy: Like we talked before, all the erasement of an edge use lazy update policy, here is the same situation.
+After we erase the node, we will mark this identifier invalid as well as all the edges related to it. This lazy update policy will have O(E) running time.
+We will not dynamically resize the matrix by ourselves, since std::vector can do this resource management efficiently.
+Then, when a new node is added afterwards, there will be no extra costs.
+\item Recycling and Mapping: This is also another trick. In a graph, the unique identifier is generated one-by-one, which means this will not be recycled.
+However, for the matrix, it is impossible for us to maintain a large 2-d vector with many zero values. Therefore, we must
+find a way to let the new node to use these empty location generated by erased nodes. Then, we came up with this idea. We use a map here to map the identifier (not recycled) to the real index stored in the graph.
+Similarly, we can use std::vector to replace this map, but map is better to handle frequent erasing and inserting. With this map, we can let the index used repeatedly.
+To get the re-used index, we use std::stack, so we can get the index in O(1) time. 
+\end{itemize}
+
+\section{Algorithm Design}
+Our implemented algorithms are all generic. We use template and concept. 
+
+For BFS and DFS algorithm, in fact it only differs in the container type. In this way, we can use a generic template for these two algorithms that accept an argument indicating the container type.
+The generic interface is,
+\begin{lstlisting}
+bool generic_pathexists(G g, typename G::node_handle s, typename 
+G::node_handle e, C& container) {}
+
+\end{lstlisting} 
+and the BFS is just,
+\begin{lstlisting}
+bool bfs_pathexists(G g, typename G::node_handle s, typename 
+G::node_handle e) {
+    _queue<typename G::node_handle> q;
+    return generic_pathexists(g, s, e, q);
+}
+\end{lstlisting}
+DFS is,
+\begin{lstlisting}
+bool dfs_pathexists(G g, typename G::node_handle s, typename 
+G::node_handle e) {
+    stack<typename G::node_handle> q;
+    return generic_pathexists(g, s, e, q);
+}
+\end{lstlisting}
+It is easy for this template to be used in other algorithm just by changing the container type. 
+
 
 \section{For Developers}
 
