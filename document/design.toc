@@ -1,20 +1,22 @@
 \contentsline {section}{\numberline {1}Introduction}{2}
-\contentsline {section}{\numberline {2}Assumption}{2}
+\contentsline {section}{\numberline {2}Assumptions}{2}
 \contentsline {section}{\numberline {3}Node}{2}
-\contentsline {section}{\numberline {4}Edge}{2}
-\contentsline {section}{\numberline {5}Graph Declarations}{2}
-\contentsline {subsection}{\numberline {5.1}General Design}{2}
+\contentsline {section}{\numberline {4}Edge}{3}
+\contentsline {section}{\numberline {5}Graph Declarations}{3}
+\contentsline {subsection}{\numberline {5.1}General Design}{3}
 \contentsline {subsection}{\numberline {5.2}Lazy Update Strategy}{4}
 \contentsline {subsection}{\numberline {5.3}Graph Maintenance}{4}
 \contentsline {subsubsection}{\numberline {5.3.1}Constructor}{4}
-\contentsline {subsubsection}{\numberline {5.3.2}Insert Node}{4}
-\contentsline {subsubsection}{\numberline {5.3.3}Insert Edge}{4}
-\contentsline {subsubsection}{\numberline {5.3.4}Erase Edge}{4}
-\contentsline {subsection}{\numberline {5.4}Graph Visiting}{4}
-\contentsline {section}{\numberline {6}Graph Storage}{5}
-\contentsline {subsection}{\numberline {6.1}Dense Graph}{5}
-\contentsline {subsection}{\numberline {6.2}Sparse Graph}{5}
-\contentsline {subsection}{\numberline {6.3}Fixed Graph}{6}
-\contentsline {subsection}{\numberline {6.4}Variable Graph}{6}
+\contentsline {subsubsection}{\numberline {5.3.2}Insert Node}{5}
+\contentsline {subsubsection}{\numberline {5.3.3}Erase Node}{5}
+\contentsline {subsubsection}{\numberline {5.3.4}Insert Edge}{5}
+\contentsline {subsubsection}{\numberline {5.3.5}Erase Edge}{5}
+\contentsline {subsection}{\numberline {5.4}Graph Visiting}{5}
+\contentsline {section}{\numberline {6}Graph Storage}{6}
+\contentsline {subsection}{\numberline {6.1}Dense Graph}{6}
+\contentsline {subsection}{\numberline {6.2}Sparse Graph}{6}
+\contentsline {subsection}{\numberline {6.3}Fixed Graph}{7}
+\contentsline {subsection}{\numberline {6.4}Variable Graph}{7}
 \contentsline {section}{\numberline {7}Algorithm Design}{7}
-\contentsline {section}{\numberline {8}For Developers}{7}
+\contentsline {section}{\numberline {8}For Developers}{8}
+\contentsline {section}{\numberline {9}Future Work}{8}

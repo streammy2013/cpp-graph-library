@@ -172,6 +172,7 @@ void shortest_path_bf(G g, typename G::node_handle s,
     }
 }
 
+
 template<typename G>
 requires Graph<G>
 void print_path(G g, typename G::node_handle s, typename G::node_handle t,

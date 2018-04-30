@@ -348,7 +348,7 @@ int main() {
 //    fixed_sparse_tests<fixed_directed_sparse_graph<city, dis>, city, dis>();
 //    dense_tests<directed_dense_graph<city, dis>, city, dis>();
 //    sparse_tests<directed_sparse_graph<city, dis>, city, dis>();
-    load_map_data();
-    load_circle_data<fixed_directed_dense_graph<city, dis>, city, dis>();
+//    load_map_data();
+//    load_circle_data<fixed_directed_dense_graph<city, dis>, city, dis>();
 //    test_shortest_path();
 }
