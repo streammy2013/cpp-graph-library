@@ -1,4 +1,12 @@
 \documentclass[]{article}
+\usepackage[usenames, dvipsnames]{color}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset { %
+    language=C++,
+    backgroundcolor=\color{black!5}, % set backgroundcolor
+    basicstyle=\footnotesize,% basic font setting
+}
 
 %opening
 \title{C++ Graph Library Reference Manual}
@@ -8,17 +16,107 @@
 
 \maketitle
 \section{Introduction}
+This is the manual for our C++ Graph library. It is a simple C++ class library for the computation and analysis of graphs like maps, social networks, web pages. This library provides convenient and efficient functionality for creating and accessing different directed graphs with no complex interfaces. In this version, we implement graph classes on directed graphs (which can also be used as the basis of undirected graphs) with no multiple edges or loops, which probably is the most common and widely used model for graph. It presents you with the promising future of creating efficient graphs with just a few lines of codes.
 
-\section {Node}
-User can define the node type they want to use. A node type must supports:
+\section {Graphs}
+In this section, we introduce different graphs in this library, including their hierarchy organization, important structures and classes, and some basic operations.
+\subsection{Graph}
+Our library presents graphs in a hierarchy relationship. A virtual base class \textbf{\textcolor{blue}{graph}} is the base for all graphs mentioned below. A class \textbf{\textcolor{blue}{directed\_graph}} inherits from \textbf{\textcolor{blue}{graph}}, which presents all directed graphs. Then there are four types of directed graphs:
+\begin{itemize}
+	\item directed dense graph: \textbf{\textcolor{blue}{directed\_dense\_graph}}.
+	\item directed sparse graph: \textbf{\textcolor{blue}{dierected\_sparse\_graph}}
+	\item directed dense graph with fixed size: \textbf{\textcolor{blue}{fixed\_directed\_dense\_graph}}
+	\item directed sparse graph with fixed size: \textbf{\textcolor{blue}{fixed\_directed\_sparse\_graph}}
+\end{itemize}
+By "dense" we mean that the number of edges is close to the maximal number of edges and "sparse" means that a graph has only a few edges\footnote{https:\/\/en.wikipedia.org\/wiki\/Dense\_graph}. A graph has fixed size if and only if the maximum total number of vertices is a constant.
+All directed graphs have similar basic operations like inserting a new node or edge, erasing an existing edge, printing the graph information and so on, while they have different implementations. This allows absence in defining specific graph types in some basic algorithms, which we will introduce in detail in section 3.
+\subsection{Node}
+A node is a fundamental unit for a graph to be formed. It usually includes some information about some objects. Our design allows the node to be defined by the user to include specific node information. Replace the content of class \textbf{\textcolor{blue}{city}} with your specific node information in the user{\_}structure.h file to generate node types. The user-defined node type has to have a \textbf{\textcolor{blue}{to\_string}} function, which returns all information in this node as a string.\\
+\begin{lstlisting}
+struct city {
+    string name;
+    city(string input): name(input) {} 
+    string to_string() {
+        return name;
+    }
+};
+\end{lstlisting}
+Our design generate new nodes from graph using \textbf{\textcolor{blue}{insert\_node}} function rather than from the node itself, which means that one node needs to belong to one graph for future use. This function will return the unique identifier which is a handler that can be used to access this node in the future.
 
-\section {Edge}
-User can define the edge type they choose to use. An edge type must supports:
-
-\section{Graph Declarations}
-inheritance
-\subsection{}
-\section{Path Functions}
+\subsection{Edge}
+An edge is an ordered pair of nodes. We identify the source node as \textbf{\textcolor{blue}{from}} node and the target node as \textbf{\textcolor{blue}{to}} node in the code. Our design allows the edge to be defined by the user to include specific edge information. Replace the content of class \textbf{\textcolor{blue}{dis}} to generate edge types. The user-defined edge type has to have a \textbf{\textcolor{blue}{to\_string}} to return all information in this node as a string, a \textbf{\textcolor{blue}{get\_val}} function to return the weight of this edge, and a \textbf{\textcolor{blue}{operator+}} function to return the sum of this edge's weight and another edge's weight.\\
+\begin{lstlisting}
+struct dis {
+    size_t miles;
+    dis(){}
+    dis(size_t input): miles(input) {}
+    string to_string() {
+        return std::to_string(miles);
+    }
+    const size_t get_val() const{
+        return miles;
+    }
+    dis operator+(dis d) const{
+        return dis(miles + d.miles);
+    }
+};
+\end{lstlisting}
+An edge is generated only from a graph using \textbf{\textcolor{blue}{insert\_edge}}, to ensure that edges are always attached to a specific graph. This function will return a pair of from and to nodes, which is a handler that can be used to access this edge in the future.
+\subsection{Graph operations}
+Basic operations for \textbf{\textcolor{blue}{directed\_dense\_graph}}, \textbf{\textcolor{blue}{directed\_sparse\_graph}}, \textbf{\textcolor{blue}{fixed\_directed\_dense\_graph}} and \textbf{\textcolor{blue}{fixed\_directed\_sparse\_graph}} are quite similar. They all use \textbf{\textcolor{blue}{$<$V,E$>$}} as template, while V stands for the \textbf{\textcolor{blue}{city}} struct of nodes and E stands for the \textbf{\textcolor{blue}{dis}} struct of edges mentioned previously. They all use \textbf{\textcolor{blue}{node\_handle}} as \textbf{\textcolor{blue}{size\_t}}, \textbf{\textcolor{blue}{edge\_handle}} as \textbf{\textcolor{blue}{pair$<$node\_handle, node\_handle$>$}} and \textbf{\textcolor{blue}{cost\_type}} as \textbf{\textcolor{blue}{E}}.\\
+The only difference for using these graph classes is that for fixed graph, either dense or sparse, we can call the constructor with or without arguments (with an int argument to set the maximum number of nodes in this graph), while for unfixed graph we can only call the constructor with no argument, because we cannot set the size as a constant.
+\subsubsection{node\_handle insert\_node (V info)}
+Insert new node into the graph.
+Input is the information of the new node, returns the node handler.
+\begin{lstlisting}
+//create a directed dense graph ddg
+directed_dense_graph<V, E> ddg = directed_dense_graph<V, E>();
+//insert a node with name "New York" into fddg
+//the handler of this node is v0
+auto v0 = ddg.insert_node(city("New York")); 
+\end{lstlisting}
+\subsubsection{size\_t node\_cnt()}
+Count the number of nodes in the graph.
+No input arguments. Returns the size of current nodes.
+\subsubsection{V handle\_to\_info (node\_handle v)}
+Get the node information of given node handler.
+Inputs a node handler, returns the corresponding node of this handle.
+\subsubsection{E end\_to\_edge (node\_handle h1, node\_handle h2)}
+Find the edge information of given node handlers.
+Inputs are two node handlers, the handlers of the source and target nodes. Returns the possible edge between them.
+\subsubsection{edge\_handle insert\_edge (node\_handle v1, node\_handle v2, E info)}
+Insert new edge of two nods into the graph.
+Inputs two node handlers and the information of the edge from the first node to the second node. Returns the handler of the newly inserted edge.
+\subsubsection{void erase\_edge (edge\_handle e)}
+Erase existed edge.
+Inputs the handler of the edge which needs to be deleted.
+\subsubsection{void print\_graph()}
+Print information of all nodes and edges in this graph.
+\subsubsection{out\_edges out(node\_handle v)}
+Get the information of all edges whose source node is the node of given node handler.
+Inputs the node handler, returns all the edges starts from it.
+\begin{lstlisting}
+//do something to all the edges starting from node v in graph g
+for (auto& e: g.out(v)) {
+            //do something
+        }
+\end{lstlisting}
+\subsubsection{const V\& operator[](node\_handle v)const}
+Access to the node of given node handler.
+Inputs the node handler, returns the node information.
+\section {Algorithms}
+We provide implementations of several basic and useful graph algorithms in \textbf{\textcolor{blue}{agorighms.h}}.
+\subsection{pathexists}
+\textbf{bool bfs\_pathexists(G g, typename G::node\_handle s, typename G::node\_handle e)}\\
+\textbf{bool dfs\_pathexists(G g, typename G::node\_handle s, typename G::node\_handle e)}\\
+Do bfs/dfs on the graph from given node handlers to know whether there is a path between them.
+Inputs the graph and two node handlers of source and target nodes. Return whether there is a path between them using bfs/dfs.
+\subsection{findpath}
+\textbf{shared\_ptr$<$path$<$G, typename G::node\_handle$>>$ bfs\_findpath(G g, typename G::node\_handle s, typename G::node\_handle e)}\\
+\textbf{shared\_ptr$<$path$<$G, typename G::node\_handle$>>$ dfs\_findpath(G g, typename G::node\_handle s, typename G::node\_handle e)}\\
+Do bfs/dfs on the graph from given node handlers to the the path.
+Inputs the graph and two node handlers of source and target nodes. Return the path between them using bfs/dfs.
 \section{For Developers}
+Our library supports expansion for different graph types. The virtual class \textbf{\textcolor{blue}{Graph}} has several virtual functions, which are basic operations for any types of graphs. Developers are able to add up any new Graph like tree or undirected graph or graph with capacity from this base \textbf{\textcolor{blue}{Graph}}, which is quite convenient and simple to operate on our clear hierarchy structure. Please refer to our tutorial for examples in expanding the structure.
 
 \end{document}
