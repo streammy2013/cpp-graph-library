@@ -1,0 +1,21 @@
+\contentsline {section}{\numberline {1}Introduction}{2}
+\contentsline {section}{\numberline {2}Graphs}{2}
+\contentsline {subsection}{\numberline {2.1}Graph}{2}
+\contentsline {subsection}{\numberline {2.2}Node}{2}
+\contentsline {subsection}{\numberline {2.3}Edge}{3}
+\contentsline {subsection}{\numberline {2.4}Graph operations}{3}
+\contentsline {subsubsection}{\numberline {2.4.1}node\_handle insert\_node (V info)}{4}
+\contentsline {subsubsection}{\numberline {2.4.2}size\_t node\_cnt()}{4}
+\contentsline {subsubsection}{\numberline {2.4.3}V handle\_to\_info (node\_handle v)}{4}
+\contentsline {subsubsection}{\numberline {2.4.4}E end\_to\_edge (node\_handle h1, node\_handle h2)}{4}
+\contentsline {subsubsection}{\numberline {2.4.5}edge\_handle insert\_edge (node\_handle v1, node\_handle v2, E info)}{4}
+\contentsline {subsubsection}{\numberline {2.4.6}void erase\_edge (edge\_handle e)}{4}
+\contentsline {subsubsection}{\numberline {2.4.7}void print\_graph()}{5}
+\contentsline {subsubsection}{\numberline {2.4.8}out\_edges out(node\_handle v)}{5}
+\contentsline {subsubsection}{\numberline {2.4.9}const V\& operator[](node\_handle v)const}{5}
+\contentsline {section}{\numberline {3}Algorithms}{5}
+\contentsline {subsection}{\numberline {3.1}pathexists}{5}
+\contentsline {subsection}{\numberline {3.2}findpath}{5}
+\contentsline {section}{\numberline {4}For Developers}{6}
+\contentsline {subsection}{\numberline {4.1}Add more graphs}{6}
+\contentsline {subsection}{\numberline {4.2}Add more algorithms}{6}

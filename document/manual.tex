@@ -9,12 +9,24 @@
 }
 
 %opening
-\title{C++ Graph Library Reference Manual}
-\author{}
+\title{C++ Generic Graph Library Reference Manual}
+\author{Chenqin Xu\\
+	{\tt\small cx2198@columbia.edu}
+	\and
+	Kaimao Yang\\
+	{\tt\small ky2371@columbia.edu}
+	\and
+	Mingjie Zhao\\
+	{\tt\small mz2646@columbia.edu}
+}
+
 
 \begin{document}
 
 \maketitle
+
+\tableofcontents
+\newpage
 \section{Introduction}
 This is the manual for our C++ Graph library. It is a simple C++ class library for the computation and analysis of graphs like maps, social networks, web pages. This library provides convenient and efficient functionality for creating and accessing different directed graphs with no complex interfaces. In this version, we implement graph classes on directed graphs (which can also be used as the basis of undirected graphs) with no multiple edges or loops, which probably is the most common and widely used model for graph. It presents you with the promising future of creating efficient graphs with just a few lines of codes.
 
@@ -63,8 +75,10 @@ struct dis {
 \end{lstlisting}
 An edge is generated only from a graph using \textbf{\textcolor{blue}{insert\_edge}}, to ensure that edges are always attached to a specific graph. This function will return a pair of from and to nodes, which is a handler that can be used to access this edge in the future.
 \subsection{Graph operations}
-Basic operations for \textbf{\textcolor{blue}{directed\_dense\_graph}}, \textbf{\textcolor{blue}{directed\_sparse\_graph}}, \textbf{\textcolor{blue}{fixed\_directed\_dense\_graph}} and \textbf{\textcolor{blue}{fixed\_directed\_sparse\_graph}} are quite similar. They all use \textbf{\textcolor{blue}{$<$V,E$>$}} as template, while V stands for the \textbf{\textcolor{blue}{city}} struct of nodes and E stands for the \textbf{\textcolor{blue}{dis}} struct of edges mentioned previously. They all use \textbf{\textcolor{blue}{node\_handle}} as \textbf{\textcolor{blue}{size\_t}}, \textbf{\textcolor{blue}{edge\_handle}} as \textbf{\textcolor{blue}{pair$<$node\_handle, node\_handle$>$}} and \textbf{\textcolor{blue}{cost\_type}} as \textbf{\textcolor{blue}{E}}.\\
-The only difference for using these graph classes is that for fixed graph, either dense or sparse, we can call the constructor with or without arguments (with an int argument to set the maximum number of nodes in this graph), while for unfixed graph we can only call the constructor with no argument, because we cannot set the size as a constant.
+Basic operations for \textbf{\textcolor{blue}{directed\_dense\_graph}}, \textbf{\textcolor{blue}{directed\_sparse\_graph}}, 
+
+\textbf{\textcolor{blue}{fixed\_directed\_dense\_graph}} and \textbf{\textcolor{blue}{fixed\_directed\_sparse\_graph}} are quite similar. They all use \textbf{\textcolor{blue}{$<$V,E$>$}} as template, while V stands for the \textbf{\textcolor{blue}{city}} struct of nodes and E stands for the \textbf{\textcolor{blue}{dis}} struct of edges mentioned previously. They all use \textbf{\textcolor{blue}{node\_handle}} as \textbf{\textcolor{blue}{size\_t}}, \textbf{\textcolor{blue}{edge\_handle}} as \textbf{\textcolor{blue}{pair$<$node\_handle, node\_handle$>$}} and \textbf{\textcolor{blue}{cost\_type}} as \textbf{\textcolor{blue}{E}}.\\
+The only difference for using these graph classes is that for fixed graph, either dense or sparse, we can call the constructor with arguments (with an int argument to set the maximum number of nodes in this graph), while for unfixed graph we can only call the constructor with no argument, because we cannot set the size as a constant.
 \subsubsection{node\_handle insert\_node (V info)}
 Insert new node into the graph.
 Input is the information of the new node, returns the node handler.
@@ -109,14 +123,32 @@ We provide implementations of several basic and useful graph algorithms in \text
 \subsection{pathexists}
 \textbf{bool bfs\_pathexists(G g, typename G::node\_handle s, typename G::node\_handle e)}\\
 \textbf{bool dfs\_pathexists(G g, typename G::node\_handle s, typename G::node\_handle e)}\\
-Do bfs/dfs on the graph from given node handlers to know whether there is a path between them.
+Do BFS/DFS on the graph from given node handlers to know whether there is a path between them.
 Inputs the graph and two node handlers of source and target nodes. Return whether there is a path between them using bfs/dfs.
 \subsection{findpath}
 \textbf{shared\_ptr$<$path$<$G, typename G::node\_handle$>>$ bfs\_findpath(G g, typename G::node\_handle s, typename G::node\_handle e)}\\
 \textbf{shared\_ptr$<$path$<$G, typename G::node\_handle$>>$ dfs\_findpath(G g, typename G::node\_handle s, typename G::node\_handle e)}\\
-Do bfs/dfs on the graph from given node handlers to the the path.
+Do BFS/DFS on the graph from given node handlers to the the path.
 Inputs the graph and two node handlers of source and target nodes. Return the path between them using bfs/dfs.
 \section{For Developers}
+\subsection{Add more graphs}
 Our library supports expansion for different graph types. The virtual class \textbf{\textcolor{blue}{Graph}} has several virtual functions, which are basic operations for any types of graphs. Developers are able to add up any new Graph like tree or undirected graph or graph with capacity from this base \textbf{\textcolor{blue}{Graph}}, which is quite convenient and simple to operate on our clear hierarchy structure. Please refer to our tutorial for examples in expanding the structure.
+
+For a graph inherited for the base abstracted class, it need to implemented these functions:
+\begin{lstlisting}
+class any_graph {        
+public:     
+ using node_handle = size_t;
+ using edge_handle = pair<size_t, size_t>;   
+ any_graph() {}
+ virtual ~any_graph()=0;
+ virtual node_handle insert_node(V)=0;
+ virtual edge_handle insert_edge(node_handle, node_handle, E)=0;
+ virtual void erase_edge(edge_handle)=0;
+ virtual void print_graph()=0;
+};
+\end{lstlisting}
+\subsection{Add more algorithms}
+Developers can add more algorithms to our existed graphs based on the BFS/DFS algorithms we have provided. We provide an iterators to traverse all the out-deges of a given node using range-for expression. Developers can add more opertions overloading to support other loop expressions. 
 
 \end{document}

@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage{listings}
 \usepackage{graphicx}
+\usepackage{url}
 \usepackage{xcolor}
 \lstset { %
 	language=C++,
@@ -8,8 +9,16 @@
 	basicstyle=\footnotesize,% basic font setting
 }
 %opening
-\title{C++ Directed Graph Library Tutorial}
-\author{}
+\title{C++ Generic Graph Library Tutorial}
+\author{Chenqin Xu\\
+	{\tt\small cx2198@columbia.edu}
+	\and
+	Kaimao Yang\\
+	{\tt\small ky2371@columbia.edu}
+	\and
+	Mingjie Zhao\\
+	{\tt\small mz2646@columbia.edu}
+}
 
 \begin{document}
 
@@ -143,7 +152,7 @@ unordered_map<typename G::node_handle, typename G::node_handle>& pi){
 	}
 }
 \end{lstlisting}
-The implementation is quite straightforward. If you do not know about the Bellman-Ford Algorithm, you can have a look at www.columbia.edu/~cs2035/courses/csor4231.F17/sp.pdf. The pseudocode on slide 6 and 9 can give you an understanding of the algorithm. Here we omit the part of checking negative loop in the pseudocode.
+The implementation is quite straightforward. If you do not know about the Bellman-Ford Algorithm, you can have a look at \url{www.columbia.edu/~cs2035/courses/csor4231.F17/sp.pdf}. The pseudocode on slide 6 and 9 can give you an understanding of the algorithm. Here we omit the part of checking negative loop in the pseudocode.
 \\
 First we need to initialize the map $d$ and $pi(\pi)$ to store the cost and the previous vertex at any vertex. Then we need to do a loop for $|V|$ times. This can be easily done by calling the \textit{all\_nodes()} function on the graph. It will give you handles of all nodes in the graph. The next step is to traverse all edges in the graph. You can do this by combining looping \textit{all\_nodes()} and \textit{out()}. \textit{out(v)} will give you edges from vertex $v$ to other vertices. By traversing all out edges on every vertex, you go through evert edge in the graph exactly one time.
 \\

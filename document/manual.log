@@ -1,7 +1,6 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  30 APR 2018 12:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  30 APR 2018 12:53
 entering extended mode
  restricted \write18 enabled.
- file:line:error style messages enabled.
  %&-line parsing enabled.
 **manual.tex
 (./manual.tex
@@ -105,18 +104,18 @@ File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 (./manual.aux)
 \openout1 = `manual.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
 
 (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -134,69 +133,76 @@ LaTeX Font Info:    ... okay on input line 15.
 )
 \c@lstlisting=\count102
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 17.
+(Font)              <12> on input line 26.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 17.
+(Font)              <8> on input line 26.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 17.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 26.
+(Font)              <6> on input line 26.
+ (./manual.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 3.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 3.
+)
+\tf@toc=\write3
+\openout3 = `manual.toc'.
+
+ [1
+
+{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 38.
  (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 26.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 31.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 31.
- [1
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 38.
 
-{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 34--35
-
- []
-
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <8> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 36.
-
-Underfull \hbox (badness 10000) in paragraph at lines 47--48
+Underfull \hbox (badness 10000) in paragraph at lines 46--47
 
  []
 
 [2]
-Overfull \hbox (101.62274pt too wide) in paragraph at lines 66--68
-\OT1/cmr/m/n/10 Basic op-er-a-tions for []\OT1/cmr/bx/n/10 di-rected[]dense[]gr
-aph[]\OT1/cmr/m/n/10 , []\OT1/cmr/bx/n/10 di-rected[]sparse[]graph[]\OT1/cmr/m/
-n/10 , []\OT1/cmr/bx/n/10 fixed[]directed[]dense[]graph[]
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <8> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 48.
+
+Underfull \hbox (badness 10000) in paragraph at lines 59--60
+
  []
 
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 73.
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/omlcmr.fd
+
+Overfull \hbox (1.66916pt too wide) in paragraph at lines 80--82
+[][]\OT1/cmr/bx/n/10 fixed[]directed[]dense[]graph[] \OT1/cmr/m/n/10 and []\OT1
+/cmr/bx/n/10 fixed[]directed[]sparse[]graph[] \OT1/cmr/m/n/10 are quite
+ []
+
+[3]
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 87.
+ (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <8> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 73.
- [3]
-Overfull \hbox (46.69705pt too wide) in paragraph at lines 110--114
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 87.
+ [4]
+Overfull \hbox (46.69705pt too wide) in paragraph at lines 124--128
 \OT1/cmr/bx/n/10 bool bfs[]pathexists(G g, type-name G::node[]handle s, type-na
 me G::node[]handle
  []
 
 
-Overfull \hbox (46.69705pt too wide) in paragraph at lines 110--114
+Overfull \hbox (46.69705pt too wide) in paragraph at lines 124--128
 \OT1/cmr/bx/n/10 bool dfs[]pathexists(G g, type-name G::node[]handle s, type-na
 me G::node[]handle
  []
 
-[4] [5] (./manual.aux) ) 
+[5] [6] (./manual.aux) ) 
 Here is how much of TeX's memory you used:
- 3112 strings out of 492995
- 42928 string characters out of 6132704
- 142674 words of memory out of 5000000
- 6676 multiletter control sequences out of 15000+600000
- 8556 words of font info for 30 fonts, out of 8000000 for 9000
+ 3139 strings out of 492995
+ 43268 string characters out of 6132704
+ 143674 words of memory out of 5000000
+ 6698 multiletter control sequences out of 15000+600000
+ 8892 words of font info for 32 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 33i,8n,58p,793b,1461s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 33i,8n,58p,716b,1146s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/
 amsfonts/cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/a
 msfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/am
@@ -210,11 +216,12 @@ mr6.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7
 .pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pf
 b></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 ></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><
-/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb>
-Output written on manual.pdf (5 pages, 160430 bytes).
+/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></u
+sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
+Output written on manual.pdf (6 pages, 181134 bytes).
 PDF statistics:
- 76 PDF objects out of 1000 (max. 8388607)
- 54 compressed objects within 1 object stream
+ 83 PDF objects out of 1000 (max. 8388607)
+ 59 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

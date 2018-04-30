@@ -1,0 +1,103 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{xcolor}
+\lstset { %
+	language=C++,
+	backgroundcolor=\color{black!5}, % set backgroundcolor
+	basicstyle=\footnotesize,% basic font setting
+}
+%opening
+\title{C++ Generic Graph Library Metric Analysis}
+\author{Chenqin Xu\\
+	{\tt\small cx2198@columbia.edu}
+	\and
+	Kaimao Yang\\
+	{\tt\small ky2371@columbia.edu}
+	\and
+	Mingjie Zhao\\
+	{\tt\small mz2646@columbia.edu}
+}
+
+\begin{document}
+
+    \maketitle
+
+    \tableofcontents
+    
+    \newpage
+    \section{Environment}
+    Our test environment are listed in table.~\ref{tab:env}.
+    	\begin{table}
+    	\begin{center}
+    		\begin{tabular}{|l|c|}
+    			\hline
+				OS & macOS High Sierra\\
+				\hline 
+				Processor & Inter Core i7\\
+				\hline
+    			GCC Version & 7.3.0 \\
+    			\hline
+    			Compling option  & -O3 \\
+    			\hline
+    			C++ standard & C++17 \\
+    			\hline
+    		\end{tabular}
+    	\end{center}
+    	\caption{Environment}
+    	\label{tab:env}
+    \end{table}
+   \section{Test on real data}
+   We use data from Social circles provided by Facebook (accessed from \url{https://snap.stanford.edu/data/egonets-Facebook.html
+   }). This dataset includes 4039 nodes and 88234 edges. According to definition, this is a sparse graph. We test our graph library based on this dataset running BFS find path algorithms to find whether two people know each other and shortest path algorithms to find the minimum connections needed to let two people know each other, and the result is shown in table.~\ref{tab:test1}.
+
+    	\begin{table}
+	\begin{center}
+		\begin{tabular}{|l|c|c|}
+			\hline
+			 & BFS Find Path & Single Source Shortest Path\\
+			\hline
+			\hline 
+			Fixed dense graph & 0.2602 & 96.1392\\
+			\hline
+			Dense graph &  0.3597 & 102.8210\\
+			\hline
+			Fixed sparse graph&  0.0054& 15.4307\\
+			\hline
+			Sparse graph &  0.0088 & 14.3237\\
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{Test on real data}
+	\label{tab:test1}
+	\end{table}
+From the result we can find that the fixed graph saves 10\% time than variable graphs, that means our design is useful when users do not need to chage the graph's size. The reason why it is quicker is that in variable graph we use a \textbf{\textcolor{blue}{unordered\_map}} to store the mapping, and each time we need to check this map. This also means,using a \textbf{\textcolor{blue}{vector}} is more efficient that \textbf{\textcolor{blue}{unordered\_map}}. Therefore, our optimization works. Another thing we find is the sparse graph is much faster than dense graph, which is also expected because the increment operation we used to traverse the out edges. For dense graph, we need to check the validness of each edge, while in sparse graph all edges are valid.
+   \section{Test on artificial data}
+   It necessary for us to test our graph library on a dense graph. We generated a dense graph that has 400 nodes and 79601 edges, and ran the same algorithms. The result is shown in  
+   
+       	\begin{table}
+   	\begin{center}
+   		\begin{tabular}{|l|c|c|}
+   			\hline
+   			& BFS Find Path & Single Source Shortest Path\\
+   			\hline
+   			\hline 
+   			Fixed dense graph & 0.0110 & 0.6600\\
+   			\hline
+   			Dense graph &  0.0108 & 0.6897\\
+   			\hline
+   			Fixed sparse graph & 0.0084& 0.5821\\
+   			\hline
+   			Sparse graph &  0.0100 & 0.6112\\
+   			\hline
+   		\end{tabular}
+   	\end{center}
+   	\caption{Test on real data}
+   	\label{tab:test1}
+   \end{table}
+From this result, we can find dense and sparse graphs have similar performance. We use adjacency matrix to implement dense graph. The main advantage is the quick remove and access to one specific edge between two vertices. In this two algorithms, we only go through all the vertices, all edges or adjacent edges, and that is why they have similar performance. However, we can expect better performance on dense graphs if we access edges very often.
+
+\section{Conclusion}
+From our result, we find that our classification is useful for different applications. Sometimes, it is not necessarily to use the general graphs, and a little simpler graph is enough and saves time and space resources. Also, using our library to write these algorithms is minute-work, so it will be very handy for developers.
+\end{document}
